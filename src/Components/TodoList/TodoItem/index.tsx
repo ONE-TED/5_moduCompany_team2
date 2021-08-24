@@ -52,22 +52,25 @@ const TodoItem: React.FC<Props> = ({
   const updateState = (): void => {
     console.log(todo.id, todo.stateId);
   };
-  const onDragStart = (e: any) => {
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    const $target = e.target as HTMLDivElement;
+    $target.classList.add('grap');
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
-    console.log(e.target, todo.id);
   };
-  const onDragEnter = (e: any) => {
-    const { id } = e.target.dataset;
+  const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     setDragItemId.interSectItem(todo.id);
   };
 
-  const onDragEnd = (e: any) => {
+  const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
     switchStateData();
+    const $target = e.target as HTMLDivElement;
+    $target.classList.remove('grap');
   };
-  const onDragOver = (e: any) => {
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
+
   return (
     <Container
       data-id={todo.id}
@@ -145,9 +148,12 @@ const Container = styled.div`
   height: 56px;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.darkLine};
   & div {
     margin: 10px;
+  }
+  &.grap {
+    background-color: ${({ theme }) => theme.colors.darkLine};
   }
 `;
 const StatusButton = styled(Button)`
