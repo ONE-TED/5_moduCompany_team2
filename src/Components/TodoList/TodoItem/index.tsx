@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { TodoTypes } from 'Components/TodoList/index';
 import Button from 'Components/Button';
-import { getElementIndex } from 'utils/DragNdrop';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
 interface Props {
@@ -58,7 +57,7 @@ const TodoItem: React.FC<Props> = ({
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
   };
-  const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDragEnter = () => {
     setDragItemId.interSectItem(todo.id);
   };
 
@@ -107,9 +106,6 @@ const LSide = styled.div`
   display: flex;
 `;
 const RSide = styled.div`
-  justify-content: center;
-  align-items: center;
-  display: flex;
   & > button {
     margin-right: 14px;
   }
@@ -149,6 +145,10 @@ const Container = styled.div`
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.darkLine};
+  &:hover {
+    opacity: 0.8;
+    cursor: grab;
+  }
   & div {
     margin: 10px;
   }
