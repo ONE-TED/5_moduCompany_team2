@@ -33,6 +33,7 @@ const TodoList: React.FC<Props> = ({ data, setTodoData }) => {
   //drag n drop
   const interSectElId = useRef<number>(-1);
   const clickElId = useRef<number>(-1);
+  const lastLeaveTarget = useRef<HTMLDivElement | null>(null);
   const setDragItemId = {
     grabItem: (id: number): void => {
       clickElId.current = getElementIndex(data, id);
@@ -57,12 +58,15 @@ const TodoList: React.FC<Props> = ({ data, setTodoData }) => {
       {data &&
         data.map((todo) => (
           <TodoItem
-            key={todo.stateId}
+            key={todo.id}
             todo={todo}
             checkedId={checkedId}
             handleCheckedId={handleCheckedId}
             setDragItemId={setDragItemId}
             switchStateData={switchStateData}
+            interSectElId={interSectElId}
+            clickElId={clickElId}
+            lastLeaveTarget={lastLeaveTarget}
           ></TodoItem>
         ))}
     </Wrapper>
@@ -71,4 +75,6 @@ const TodoList: React.FC<Props> = ({ data, setTodoData }) => {
 
 export default TodoList;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-top: 56px;
+`;

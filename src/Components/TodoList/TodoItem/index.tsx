@@ -13,6 +13,9 @@ interface Props {
     interSectItem: (id: number) => void;
   };
   switchStateData: () => void;
+  clickElId: { current: number | null };
+  interSectElId: { current: number | null };
+  lastLeaveTarget: { current: HTMLDivElement | null };
 }
 interface ObjetIndexTypes {
   [key: number]: string;
@@ -44,6 +47,9 @@ const TodoItem: React.FC<Props> = ({
   handleCheckedId,
   setDragItemId,
   switchStateData,
+  interSectElId,
+  clickElId,
+  lastLeaveTarget,
 }) => {
   const handleDelete = (): void => {
     console.log(todo.id, '지워질 아이디');
@@ -53,23 +59,42 @@ const TodoItem: React.FC<Props> = ({
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
     const $target = e.target as HTMLDivElement;
-    $target.classList.add('grap');
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
+    // setIsDrag(true);
   };
-  const onDragEnter = (): void => {
+  const moveAnimation = () => {
+    if (clickElId.current! < interSectElId.current!) {
+      return 'move_up';
+    } else if (clickElId.current! > interSectElId.current!) return 'move_down';
+    return '_';
+  };
+  const onDragEnter = (e: React.DragEvent<HTMLDivElement>): void => {
+    const $target = e.target as HTMLDivElement;
     setDragItemId.interSectItem(todo.id);
+    if (clickElId.current !== interSectElId.current)
+      $target.classList.add('move');
+    lastLeaveTarget.current = $target;
+    // switchStateData(); //옮길때마다 순서변경하기
+    // clickElId.current = interSectElId.current;
+    // interSectElId.current = null;
+    //겹쳐진게 잡은것보다
   };
 
   const onDragEnd = (e: React.DragEvent<HTMLDivElement>): void => {
     switchStateData();
     const $target = e.target as HTMLDivElement;
-    $target.classList.remove('grap');
+    $target.classList.remove('move');
+    if (lastLeaveTarget) lastLeaveTarget.current!.classList.remove('move');
   };
   const onDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
   };
 
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>): void => {
+    const $target = e.target as HTMLDivElement;
+    $target.classList.remove('move');
+  };
   return (
     <Container
       data-id={todo.id}
@@ -78,6 +103,7 @@ const TodoItem: React.FC<Props> = ({
       onDragEnter={onDragEnter}
       onDragEnd={onDragEnd}
       onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
     >
       <LSide>
         <CheckIconWrapper onClick={() => handleCheckedId(todo.stateId)}>
@@ -101,11 +127,14 @@ const TodoItem: React.FC<Props> = ({
 export default TodoItem;
 
 const LSide = styled.div`
-  justify-content: center;
-  align-items: center;
   display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const RSide = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   & > button {
     margin-right: 14px;
   }
@@ -125,16 +154,17 @@ const CheckIconWrapper = styled.div`
   width: 27px;
   height: 27px;
   border-radius: 20px;
-  margin-right: 8px;
   position: relative;
   cursor: pointer;
   &:hover {
     opacity: 0.9;
   }
   & > svg {
+    width: 15px;
+    height: 15px;
     position: absolute;
-    left: 10px;
-    top: 10px;
+    left: 6px;
+    top: 6px;
   }
 `;
 const Container = styled.div`
@@ -146,7 +176,7 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.darkLine};
   &:hover {
-    opacity: 0.8;
+    opacity: 0.9;
     cursor: grab;
   }
   & div {
@@ -154,6 +184,10 @@ const Container = styled.div`
   }
   &.grap {
     background-color: ${({ theme }) => theme.colors.darkLine};
+  }
+  transition: 0.1s;
+  &.move {
+    margin-bottom: 56px;
   }
 `;
 const StatusButton = styled(Button)`
