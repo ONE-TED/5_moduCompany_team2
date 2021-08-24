@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
+import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 interface TodoTypes {
   id: number;
   taskName: string;
@@ -14,16 +15,6 @@ interface CardProps {
   todoItems: TodoTypes[];
   // children: React.ReactNode;
 }
-
-// interface IDays {
-//   0: 'SUN';
-//   1: 'MON';
-//   2: 'TUE';
-//   3: 'WED';
-//   4: 'THU';
-//   5: 'FRI';
-//   6: 'SAT';
-// }
 
 interface Map {
   [key: string]: string;
@@ -45,9 +36,14 @@ const DAYS: Map = {
   6: 'SAT',
 };
 
+const circleMeasurement = {
+  STROKEWIDTH: 12,
+  RADIUS: 69,
+};
+
 const Card: React.FC<CardProps> = ({ todoItems }) => {
-  const RADIUS = 54;
-  const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+  const { STROKEWIDTH, RADIUS } = circleMeasurement;
+  const CIRCUMFERENCE = 2 * Math.PI * (RADIUS - STROKEWIDTH / 2);
 
   const barRef = useRef<SVGCircleElement>(null);
 
@@ -79,19 +75,31 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
   return (
     <CardWrapper>
       <CircleProgressWrapper>
-        <svg width="136" height="136" viewBox="0 0  136 136">
-          <FrameCircle cx="68" cy="68" r="54" strokeWidth="11.5" />
-          <BarCircle cx="68" cy="68" r="54" strokeWidth="11.5" ref={barRef} />
+        <svg width={RADIUS * 2} height={RADIUS * 2} viewBox="0 0 138 138">
+          <FrameCircle
+            cx={RADIUS}
+            cy={RADIUS}
+            r={RADIUS - 6}
+            strokeWidth={STROKEWIDTH}
+          />
+          <BarCircle
+            cx={RADIUS}
+            cy={RADIUS}
+            r={RADIUS - 6}
+            strokeWidth={STROKEWIDTH}
+            ref={barRef}
+          />
         </svg>
         <ContentInCircle>
           <strong>{`${month}/${date} ${DAYS[day]}`}</strong>
-          {/* <br /> */}
           <strong>{`${percent.toFixed(0)}%`}</strong>
         </ContentInCircle>
-        {/* <br />
-        <strong>{`${percent.toFixed(0)}%`}</strong> */}
       </CircleProgressWrapper>
-      <CardBox></CardBox>
+      <CardBox>
+        <DeleteButton>
+          <DeleteIcon />
+        </DeleteButton>
+      </CardBox>
     </CardWrapper>
   );
 };
@@ -107,8 +115,8 @@ const CardWrapper = styled.div.attrs(() => ({
 
 const CardBox = styled.div`
   position: absolute;
-  top: 68px;
-  left: -28px;
+  top: 69px;
+  left: -27px;
   width: 192px;
   height: 226px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -127,8 +135,8 @@ const CardBox = styled.div`
 const CircleProgressWrapper = styled.div`
   display: inline-block;
   position: relative;
-  width: 136px;
-  height: 136px;
+  width: 138px;
+  height: 138px;
   z-index: 10;
   svg {
     transform: rotate(-90deg);
@@ -141,8 +149,8 @@ const ContentInCircle = styled.div`
   right: 0;
   bottom: 0;
   top: 0;
-  width: 136px;
-  height: 136px;
+  width: 138px;
+  height: 138px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -151,8 +159,24 @@ const ContentInCircle = styled.div`
   strong {
     text-align: center;
     color: ${(props) => props.theme.colors.white};
-    font-size: 16px;
+    font-size: 18px;
     margin: 1px 0;
+  }
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  right: 6px;
+  top: 16px;
+
+  /* svg path {
+    fill: ${(props) => props.theme.colors.primary};
+  } */
+
+  &:hover {
+    svg path {
+      fill: ${(props) => props.theme.colors.primary};
+    }
   }
 `;
 
