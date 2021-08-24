@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { TodoTypes } from 'Components/TodoList/index';
 import Button from 'Components/Button';
+import { getElementIndex } from 'utils/DragNdrop';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
 interface Props {
   todo: TodoTypes;
   checkedId: number[];
   handleCheckedId(stateId: number): void;
+  setDragItemId: {
+    grabItem: (id: number) => void;
+    interSectItem: (id: number) => void;
+  };
+  switchStateData: () => void;
 }
 interface ObjetIndexTypes {
   [key: number]: string;
@@ -33,12 +39,44 @@ const STATUS_CLASS_NAME: ObjetIndexTypes = {
   1: 'in-progress',
   2: 'done',
 };
-const TodoItem: React.FC<Props> = ({ todo, checkedId, handleCheckedId }) => {
-  const handleDelete = (stateId: number): void => {
-    console.log(stateId, '지워질 아이디');
+const TodoItem: React.FC<Props> = ({
+  todo,
+  checkedId,
+  handleCheckedId,
+  setDragItemId,
+  switchStateData,
+}) => {
+  const handleDelete = (): void => {
+    console.log(todo.id, '지워질 아이디');
+  };
+  const updateState = (): void => {
+    console.log(todo.id, todo.stateId);
+  };
+  const onDragStart = (e: any) => {
+    e.dataTransfer.effectAllowed = 'move';
+    setDragItemId.grabItem(todo.id);
+    console.log(e.target, todo.id);
+  };
+  const onDragEnter = (e: any) => {
+    const { id } = e.target.dataset;
+    setDragItemId.interSectItem(todo.id);
+  };
+
+  const onDragEnd = (e: any) => {
+    switchStateData();
+  };
+  const onDragOver = (e: any) => {
+    e.preventDefault();
   };
   return (
-    <Container draggable>
+    <Container
+      data-id={todo.id}
+      draggable
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+    >
       <LSide>
         <CheckIconWrapper onClick={() => handleCheckedId(todo.stateId)}>
           {checkedId.includes(todo.stateId) && <CheckIcon />}
@@ -46,10 +84,13 @@ const TodoItem: React.FC<Props> = ({ todo, checkedId, handleCheckedId }) => {
         <Text>{todo.taskName}</Text>
       </LSide>
       <RSide>
-        <StatusButton className={STATUS_CLASS_NAME[todo.stateId]}>
+        <StatusButton
+          onClick={updateState}
+          className={STATUS_CLASS_NAME[todo.stateId]}
+        >
           {status[todo.stateId].state}
         </StatusButton>
-        <DeleteIcon onClick={() => handleDelete(todo.stateId)} />
+        <DeleteIcon onClick={handleDelete} />
       </RSide>
     </Container>
   );
