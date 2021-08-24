@@ -51,22 +51,22 @@ const TodoItem: React.FC<Props> = ({
   const updateState = (): void => {
     console.log(todo.id, todo.stateId);
   };
-  const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
     const $target = e.target as HTMLDivElement;
     $target.classList.add('grap');
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
   };
-  const onDragEnter = () => {
+  const onDragEnter = (): void => {
     setDragItemId.interSectItem(todo.id);
   };
 
-  const onDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDragEnd = (e: React.DragEvent<HTMLDivElement>): void => {
     switchStateData();
     const $target = e.target as HTMLDivElement;
     $target.classList.remove('grap');
   };
-  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
   };
 
