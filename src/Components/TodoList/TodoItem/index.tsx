@@ -61,39 +61,40 @@ const TodoItem: React.FC<Props> = ({
     const $target = e.target as HTMLDivElement;
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
-    // setIsDrag(true);
   };
-  const moveAnimation = () => {
+  const moveUpAndDownClassName = () => {
     if (clickElId.current! < interSectElId.current!) {
       return 'move_up';
     } else if (clickElId.current! > interSectElId.current!) return 'move_down';
     return '_';
   };
   const onDragEnter = (e: React.DragEvent<HTMLDivElement>): void => {
+    if (lastLeaveTarget.current)
+      lastLeaveTarget.current!.classList.remove('move_down');
     const $target = e.target as HTMLDivElement;
     setDragItemId.interSectItem(todo.id);
     if (clickElId.current !== interSectElId.current)
-      $target.classList.add('move');
+      $target.classList.add(moveUpAndDownClassName());
     lastLeaveTarget.current = $target;
-    // switchStateData(); //옮길때마다 순서변경하기
-    // clickElId.current = interSectElId.current;
-    // interSectElId.current = null;
-    //겹쳐진게 잡은것보다
   };
 
   const onDragEnd = (e: React.DragEvent<HTMLDivElement>): void => {
-    switchStateData();
     const $target = e.target as HTMLDivElement;
-    $target.classList.remove('move');
-    if (lastLeaveTarget) lastLeaveTarget.current!.classList.remove('move');
+    $target.classList.remove('move_up');
+    $target.classList.remove('move_down');
+    if (lastLeaveTarget.current) {
+      lastLeaveTarget.current!.classList.remove('move_up');
+      lastLeaveTarget.current!.classList.remove('move_down');
+    }
+    switchStateData();
   };
   const onDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
   };
 
-  const onDragLeave = (e: React.DragEvent<HTMLDivElement>): void => {
+  const onDragLeave = (e: any): void => {
     const $target = e.target as HTMLDivElement;
-    $target.classList.remove('move');
+    $target.classList.remove('move_up');
   };
   return (
     <Container
@@ -185,9 +186,12 @@ const Container = styled.div`
   &.grap {
     background-color: ${({ theme }) => theme.colors.darkLine};
   }
-  transition: 0.1s;
-  &.move {
-    margin-bottom: 56px;
+  transition: 0.6s;
+  &.move_up {
+    margin-bottom: 14px;
+  }
+  &.move_down {
+    margin-top: 14px;
   }
 `;
 const StatusButton = styled(Button)`

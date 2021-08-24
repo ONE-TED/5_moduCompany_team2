@@ -75,6 +75,4 @@ const TodoList: React.FC<Props> = ({ data, setTodoData }) => {
 
 export default TodoList;
 
-const Wrapper = styled.div`
-  margin-top: 56px;
-`;
+const Wrapper = styled.div``;
