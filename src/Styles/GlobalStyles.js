@@ -3,24 +3,50 @@ import reset from 'styled-reset';
 
 export const GlobalStyles = createGlobalStyle` 
     ${reset}
-    a{
-        text-decoration: none;
-        color: inherit;
-    }
     *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        font-size: 14px;
-        background-color: #fff;
-        color: #000;
+      font-family: 'Barlow', sans-serif;
     }
     input, button {
-        background-color: transparent;
-        border: none;
-        outline: none;
+      background-color: transparent;
+      border: none;
+      outline: none;
     }
+    button {
+      cursor: pointer;
+    }
+    ol,
+    ul {
+      list-style: none;
+    }
+    a{
+      text-decoration: none;
+      color: inherit;
+    }
+     img {
+      max-width: 100%;
+      height: auto;
+   }
+    [tabindex]:focus-visible,
+    label:focus-visible,
+    button:focus-visible{
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,0,0, 0.65);
+    }
+    .a11y {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
 `;
