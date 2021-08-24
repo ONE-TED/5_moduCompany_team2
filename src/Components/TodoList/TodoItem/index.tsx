@@ -7,38 +7,49 @@ import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
 interface Props {
   todo: TodoTypes;
   checkedId: number[];
-  handleCheckedId(id: number): void;
+  handleCheckedId(stateId: number): void;
 }
 interface ObjetIndexTypes {
   [key: number]: string;
 }
-const STATUS: ObjetIndexTypes = {
-  0: '완료',
-  1: '진행중',
-  2: '시작안함',
-};
+
+const status = [
+  {
+    id: 0,
+    state: '시작안함',
+  },
+  {
+    id: 1,
+    state: '진행중',
+  },
+  {
+    id: 2,
+    state: '완료',
+  },
+];
+
 const STATUS_CLASS_NAME: ObjetIndexTypes = {
-  0: 'done',
+  0: 'todo',
   1: 'in-progress',
-  2: 'todo',
+  2: 'done',
 };
 const TodoItem: React.FC<Props> = ({ todo, checkedId, handleCheckedId }) => {
-  const handleDelete = (id: number): void => {
-    console.log(id, '지워질 아이디');
+  const handleDelete = (stateId: number): void => {
+    console.log(stateId, '지워질 아이디');
   };
   return (
     <Container draggable>
       <LSide>
-        <CheckIconWrapper onClick={() => handleCheckedId(todo.id)}>
-          {checkedId.includes(todo.id) && <CheckIcon />}
+        <CheckIconWrapper onClick={() => handleCheckedId(todo.stateId)}>
+          {checkedId.includes(todo.stateId) && <CheckIcon />}
         </CheckIconWrapper>
         <Text>{todo.taskName}</Text>
       </LSide>
       <RSide>
-        <StatusButton className={STATUS_CLASS_NAME[todo.status]}>
-          {STATUS[todo.status]}
+        <StatusButton className={STATUS_CLASS_NAME[todo.stateId]}>
+          {status[todo.stateId].state}
         </StatusButton>
-        <DeleteIcon onClick={() => handleDelete(todo.id)} />
+        <DeleteIcon onClick={() => handleDelete(todo.stateId)} />
       </RSide>
     </Container>
   );

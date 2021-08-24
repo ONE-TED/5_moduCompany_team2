@@ -5,17 +5,21 @@ import styled from 'styled-components';
 export interface TodoTypes {
   id: number;
   taskName: string;
-  status: number;
+  stateId: number;
   createdAt: string;
   updatedAt: string;
   dueDate: string;
 }
 
-interface Props {
+export interface DataTypes {
+  taskDueDate: string;
   todos: Array<TodoTypes>;
 }
+interface Props {
+  data: DataTypes;
+}
 
-const TodoList: React.FC<Props> = ({ todos }) => {
+const TodoList: React.FC<Props> = ({ data }) => {
   const [checkedId, setCheckedId] = useState<number[]>([]); // 체크된 id 배열입니다 [1523,5342,2342]
   const handleCheckedId = (id: number): void => {
     if (!checkedId.includes(id)) {
@@ -26,10 +30,10 @@ const TodoList: React.FC<Props> = ({ todos }) => {
   };
   return (
     <Wrapper>
-      {todos &&
-        todos.map((todo) => (
+      {data.todos &&
+        data.todos.map((todo) => (
           <TodoItem
-            key={todo.id}
+            key={todo.stateId}
             todo={todo}
             checkedId={checkedId}
             handleCheckedId={handleCheckedId}
