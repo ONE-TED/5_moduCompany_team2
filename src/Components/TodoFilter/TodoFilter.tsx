@@ -1,14 +1,14 @@
 import React from 'react';
-import { filterItem } from './useTodoFilter';
+import { IFilterItem } from './useTodoFilter';
 import style from 'styled-components';
 import FilterButton from 'Components/TodoFilter/FilterButton';
 
-interface FilterProps {
-  filterList: filterItem[];
-  handleFilter: (filterItem: filterItem) => void;
+interface IFilterProps {
+  filterList: IFilterItem[];
+  handleFilter: (filterItem: IFilterItem) => void;
 }
 
-const TodoFilter: React.FC<FilterProps> = ({ filterList, handleFilter }) => {
+const TodoFilter: React.FC<IFilterProps> = ({ filterList, handleFilter }) => {
   return (
     <TodoFilterWrapper>
       {filterList.map((filterItem) => (

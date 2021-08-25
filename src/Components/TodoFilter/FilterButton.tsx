@@ -2,12 +2,12 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import Button from 'Components/Button';
 
-interface filterButtonProps {
+interface IFilterButtonProps {
   toggleClick: boolean;
   onClick?: () => void;
 }
 
-const FilterButton: React.FC<filterButtonProps> = ({
+const FilterButton: React.FC<IFilterButtonProps> = ({
   toggleClick,
   children,
   ...restProps
@@ -19,7 +19,7 @@ const FilterButton: React.FC<filterButtonProps> = ({
   );
 };
 
-const StyledFilterButton = styled(Button)<filterButtonProps>`
+const StyledFilterButton = styled(Button)<IFilterButtonProps>`
   ${({ toggleClick, theme }) =>
     toggleClick
       ? css`

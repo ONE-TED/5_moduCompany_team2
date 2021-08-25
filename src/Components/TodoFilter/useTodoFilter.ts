@@ -1,31 +1,34 @@
 import { useState } from 'react';
 
-export type Itodo = {
+export interface Itodo {
   id: number;
   taskName: string;
   stateId: number;
   createdAt: string;
   updatedAt: string;
   dueDate: string;
-};
+}
 
-export interface filterItem {
+export interface IFilterItem {
   readonly filterName: string;
   readonly id: number;
   readonly targetId: number | null;
   toggleClick: boolean;
 }
 
-interface todoFilterProps {
+interface ITodoFilterProps {
   todos: Itodo[];
-  filter: filterItem[];
+  filter: IFilterItem[];
 }
 
-export const useTodoFilter = ({ todos = [], filter = [] }: todoFilterProps) => {
+export const useTodoFilter = ({
+  todos = [],
+  filter = [],
+}: ITodoFilterProps) => {
   const [filterList, setFilterList] = useState(filter);
   const [filterTodos, setFilterTodos] = useState(todos);
 
-  const handleFilter = (filterItem: filterItem): void => {
+  const handleFilter = (filterItem: IFilterItem): void => {
     const nextFilterList = filterList.map((prefilterItem) =>
       filterItem.id === prefilterItem.id
         ? { ...prefilterItem, toggleClick: !prefilterItem.toggleClick }
