@@ -8,7 +8,7 @@ import blueBullet from 'Assets/images/blue-bullet.png';
 interface TodoTypes {
   id: number;
   taskName: string;
-  status: number;
+  stateId: number;
   createdAt: string;
   updatedAt: string;
   dueDate: string;
@@ -23,11 +23,20 @@ interface Map {
   [key: string]: string;
 }
 
-const STATUS: Map = {
-  0: '완료',
-  1: '진행중',
-  2: '시작안함',
-};
+const status = [
+  {
+    id: 0,
+    state: '시작안함',
+  },
+  {
+    id: 1,
+    state: '진행중',
+  },
+  {
+    id: 2,
+    state: '완료',
+  },
+];
 
 const DAYS: Map = {
   0: 'SUN',
@@ -53,7 +62,7 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
   const countTodosByStatus = Array(3)
     .fill(0)
     .map((_, index) => {
-      return todoItems.filter((item) => item.status === index).length;
+      return todoItems.filter((item) => item.stateId === index).length;
     });
   countTodosByStatus.reverse();
 
@@ -116,7 +125,9 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
         </DeleteButton>
         <SummaryOfTodos>
           {countTodosByStatus.map((count, i) => (
-            <li key={STATUS[String(i)]}>{`${STATUS[String(i)]} : ${count}`}</li>
+            <li key={status[status.length - 1 - i].state}>{`${
+              status[status.length - 1 - i].state
+            } : ${count}`}</li>
           ))}
         </SummaryOfTodos>
       </CardBox>
