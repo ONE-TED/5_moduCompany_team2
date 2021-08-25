@@ -3,7 +3,7 @@ import TodoItem from 'Components/TodoList/TodoItem';
 import styled from 'styled-components';
 import { getElementIndex } from 'utils/DragNdrop';
 
-export interface TodoTypes {
+export interface ITodoTypes {
   id: number;
   taskName: string;
   stateId: number;
@@ -12,16 +12,12 @@ export interface TodoTypes {
   dueDate: string;
 }
 
-// export interface DataTypes {
-//   // taskDueDate: string;
-//   data: Array<TodoTypes>;
-// }
-interface Props {
-  data: Array<TodoTypes>;
-  setTodoData: (newState: Array<TodoTypes>) => void;
+interface IProps {
+  data: Array<ITodoTypes>;
+  setTodoData: (newState: Array<ITodoTypes>) => void;
 }
 
-const TodoList: React.FC<Props> = ({ data, setTodoData }) => {
+const TodoList: React.FC<IProps> = ({ data, setTodoData }) => {
   const [checkedId, setCheckedId] = useState<number[]>([]); // 체크된 id 배열입니다 [1523,5342,2342]
   const handleCheckedId = (id: number): void => {
     if (!checkedId.includes(id)) {
@@ -42,7 +38,7 @@ const TodoList: React.FC<Props> = ({ data, setTodoData }) => {
       interSectElId.current = getElementIndex(data, id);
     },
   };
-  const sortStateData = (): Array<TodoTypes> => {
+  const sortStateData = (): Array<ITodoTypes> => {
     const updateData = [...data];
     const grapedItem = updateData[clickElId.current];
     updateData.splice(clickElId.current, 1); //자르고
