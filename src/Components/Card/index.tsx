@@ -2,6 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
+import greenBullet from 'Assets/images/green-bullet.png';
+import redBullet from 'Assets/images/red-bullet.png';
+import blueBullet from 'Assets/images/blue-bullet.png';
 interface TodoTypes {
   id: number;
   taskName: string;
@@ -47,8 +50,16 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
 
   const barRef = useRef<SVGCircleElement>(null);
 
-  const doneTodoItems = todoItems.filter((item) => item.status === 2);
-  const percent = (doneTodoItems.length / todoItems.length) * 100;
+  const countTodosByStatus = Array(3)
+    .fill(0)
+    .map((_, index) => {
+      return todoItems.filter((item) => item.status === index).length;
+    });
+  countTodosByStatus.reverse();
+
+  // console.log(countTodosByStatus);
+
+  const percent = (countTodosByStatus[0] / todoItems.length) * 100;
 
   const dateObject: Date = new Date(todoItems[0].dueDate);
   const month: number = dateObject.getMonth() + 1;
@@ -75,7 +86,11 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
   return (
     <CardWrapper>
       <CircleProgressWrapper>
-        <svg width={RADIUS * 2} height={RADIUS * 2} viewBox="0 0 138 138">
+        <svg
+          width={RADIUS * 2}
+          height={RADIUS * 2}
+          viewBox={`0 0 ${RADIUS * 2} ${RADIUS * 2}`}
+        >
           <FrameCircle
             cx={RADIUS}
             cy={RADIUS}
@@ -99,6 +114,11 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
         <DeleteButton>
           <DeleteIcon />
         </DeleteButton>
+        <SummaryOfTodos>
+          {countTodosByStatus.map((count, i) => (
+            <li key={STATUS[String(i)]}>{`${STATUS[String(i)]} : ${count}`}</li>
+          ))}
+        </SummaryOfTodos>
       </CardBox>
     </CardWrapper>
   );
@@ -177,6 +197,30 @@ const DeleteButton = styled.button`
     svg path {
       fill: ${(props) => props.theme.colors.primary};
     }
+  }
+`;
+
+const SummaryOfTodos = styled.ul`
+  padding-top: 60px;
+  padding-left: 16px;
+  li {
+    font-size: 14px;
+    color: white;
+    margin: 24px 0;
+    margin-left: 16px;
+  }
+
+  li:nth-child(1) {
+    color: ${(props) => props.theme.colors.green};
+    list-style-image: ${`url(${greenBullet})`};
+  }
+  li:nth-child(2) {
+    color: ${(props) => props.theme.colors.blue};
+    list-style-image: ${`url(${blueBullet})`};
+  }
+  li:nth-child(3) {
+    color: ${(props) => props.theme.colors.red};
+    list-style-image: ${`url(${redBullet})`};
   }
 `;
 
