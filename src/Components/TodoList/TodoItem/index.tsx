@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ITodoTypes } from 'Components/TodoList/index';
-import Button from 'Components/Button';
-import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
+
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
+import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
+import Button from 'Components/Button';
+import { ITodoTypes } from 'Components/TodoList';
+
 interface IProps {
   todo: ITodoTypes;
   checkedId: number[];

@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import TodoItem from 'Components/TodoList/TodoItem';
 import styled from 'styled-components';
+
 import { getElementIndex } from 'utils/DragNdrop';
+import TodoItem from 'Components/TodoList/TodoItem';
 
 export interface ITodoTypes {
   id: number;
