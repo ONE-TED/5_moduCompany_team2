@@ -149,14 +149,14 @@ const CardBox = styled.div`
   height: 226px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 4px;
-  background: ${(props) => props.theme.colors.strongDarkBg};
+  background: ${({ theme }) => theme.colors.strongDarkBg};
 
   ${CardWrapper}:hover & {
-    background: ${(props) => props.theme.colors.strongDarkBgHover};
+    background: ${({ theme }) => theme.colors.strongDarkBgHover};
   }
 
   ${CardWrapper}:focus & {
-    background: ${(props) => props.theme.colors.strongDarkBgHover};
+    background: ${({ theme }) => theme.colors.strongDarkBgHover};
   }
 `;
 
@@ -186,7 +186,7 @@ const ContentInCircle = styled.div`
 
   strong {
     text-align: center;
-    color: ${(props) => props.theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
     font-size: 18px;
     margin: 1px 0;
   }
@@ -197,13 +197,9 @@ const DeleteButton = styled.button`
   right: 6px;
   top: 16px;
 
-  /* svg path {
-    fill: ${(props) => props.theme.colors.primary};
-  } */
-
   &:hover {
     svg path {
-      fill: ${(props) => props.theme.colors.primary};
+      fill: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
@@ -219,15 +215,15 @@ const SummaryOfTodos = styled.ul`
   }
 
   li:nth-child(1) {
-    color: ${(props) => props.theme.colors.green};
+    color: ${({ theme }) => theme.colors.green};
     list-style-image: ${`url(${greenBullet})`};
   }
   li:nth-child(2) {
-    color: ${(props) => props.theme.colors.blue};
+    color: ${({ theme }) => theme.colors.blue};
     list-style-image: ${`url(${blueBullet})`};
   }
   li:nth-child(3) {
-    color: ${(props) => props.theme.colors.red};
+    color: ${({ theme }) => theme.colors.red};
     list-style-image: ${`url(${redBullet})`};
   }
 `;
@@ -239,7 +235,7 @@ const BarCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
   strokeWidth,
 }))`
   fill: none;
-  stroke: ${(props) => props.theme.colors.green};
+  stroke: ${({ theme }) => theme.colors.green};
   stroke-linecap: round;
 `;
 
@@ -249,14 +245,14 @@ const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
   r,
   strokeWidth,
 }))`
-  fill: ${(props) => props.theme.colors.strongDarkBg};
+  fill: ${({ theme }) => theme.colors.strongDarkBg};
   stroke: #e6e6e6;
 
   ${CardWrapper}:hover & {
-    fill: ${(props) => props.theme.colors.strongDarkBgHover};
+    fill: ${({ theme }) => theme.colors.strongDarkBgHover};
   }
 
   ${CardWrapper}:focus & {
-    fill: ${(props) => props.theme.colors.strongDarkBgHover};
+    fill: ${({ theme }) => theme.colors.strongDarkBgHover};
   }
 `;
