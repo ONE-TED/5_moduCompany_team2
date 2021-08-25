@@ -3,6 +3,7 @@ import { DefaultTheme } from 'styled-components';
 const theme: DefaultTheme = {
   colors: {
     primary: '#EA7C69',
+    primaryDark: '#e8654f',
     white: '#fff',
     dark: '#3B5162',
     gray: '#889898',
