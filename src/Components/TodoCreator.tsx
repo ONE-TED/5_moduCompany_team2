@@ -45,13 +45,13 @@ const TodoCreator: React.FC = () => {
 
   const handleClick = useCallback(() => {
     //TODO Refactoring
-    if (!todoText) {
+    if (inputRef.current || !todoText) {
       toast('할일을 입력해주세요.');
       inputRef.current?.focus();
       return;
     }
 
-    if (!targetDate) {
+    if (datePickerRef.current || !targetDate) {
       toast('목표 날짜를 입력해주세요.');
       datePickerRef.current?.setFocus();
       return;
@@ -66,7 +66,7 @@ const TodoCreator: React.FC = () => {
       updatedAt: getDayMonthYear(),
       dueDate,
     };
-    const task = todoStorage.item;
+    const task = todoStorage.load();
     const findTaskItem = task.find(
       (item: ITask) => item.taskDueDate === dueDate,
     ); //TODO

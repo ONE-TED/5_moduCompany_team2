@@ -18,5 +18,5 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": ["src", "custom.d.ts"]
+  "include": ["src"]
 }
