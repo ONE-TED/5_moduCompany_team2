@@ -48,13 +48,13 @@ const DAYS: Map = {
   6: 'SAT',
 };
 
-const circleMeasurement = {
+const CIRCLE_MEASUREMENT = {
   STROKEWIDTH: 12,
   RADIUS: 69,
 };
 
 const Card: React.FC<CardProps> = ({ todoItems }) => {
-  const { STROKEWIDTH, RADIUS } = circleMeasurement;
+  const { STROKEWIDTH, RADIUS } = CIRCLE_MEASUREMENT;
   const CIRCUMFERENCE = 2 * Math.PI * (RADIUS - STROKEWIDTH / 2);
 
   const barRef = useRef<SVGCircleElement>(null);
@@ -76,8 +76,6 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
   const day: string = dateObject.getDay().toString();
 
   useEffect(() => {
-    // console.log(todoItems);
-
     function showProgress(per: number): void {
       const progress = per / 100;
       const dashoffset = CIRCUMFERENCE * (1 - progress);
@@ -85,12 +83,11 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
       if (barRef && barRef.current) {
         barRef.current.style.strokeDashoffset = dashoffset.toString();
         barRef.current.style.strokeDasharray = CIRCUMFERENCE.toString();
-        // console.log(barRef.current);
       }
     }
 
     showProgress(percent);
-  }, []);
+  }, [todoItems]);
 
   return (
     <CardWrapper>
@@ -135,7 +132,7 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
   );
 };
 
-export default Card;
+export default React.memo(Card);
 
 const CardWrapper = styled.div.attrs(() => ({
   tabIndex: '0',
