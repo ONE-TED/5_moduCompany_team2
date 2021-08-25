@@ -33,9 +33,10 @@ export const GlobalStyles = createGlobalStyle`
    }
     [tabindex]:focus-visible,
     label:focus-visible,
-    button:focus-visible{
+    button:focus-visible,
+    input:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(0,0,0, 0.65);
+      box-shadow: 0 0 0 3px rgba(255,255,255, 0.65);
     }
     .a11y {
       position: absolute;
