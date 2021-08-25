@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TodoTypes } from 'Components/TodoList/index';
+import { ITodoTypes } from 'Components/TodoList/index';
 import Button from 'Components/Button';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
-interface Props {
-  todo: TodoTypes;
+interface IProps {
+  todo: ITodoTypes;
   checkedId: number[];
   handleCheckedId(stateId: number): void;
   setDragItemId: {
@@ -17,11 +17,11 @@ interface Props {
   interSectElId: { current: number | null };
   lastLeaveTarget: { current: HTMLDivElement | null };
 }
-interface ObjetIndexTypes {
+interface IObjetIndexTypes {
   [key: number]: string;
 }
 
-const status = [
+const STATUS = [
   {
     id: 0,
     state: '시작안함',
@@ -36,12 +36,12 @@ const status = [
   },
 ];
 
-const STATUS_CLASS_NAME: ObjetIndexTypes = {
+const STATUS_CLASS_NAME: IObjetIndexTypes = {
   0: 'todo',
   1: 'in-progress',
   2: 'done',
 };
-const TodoItem: React.FC<Props> = ({
+const TodoItem: React.FC<IProps> = ({
   todo,
   checkedId,
   handleCheckedId,
@@ -58,23 +58,23 @@ const TodoItem: React.FC<Props> = ({
     console.log(todo.id, todo.stateId);
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
-    const $target = e.target as HTMLDivElement;
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
   };
-  const moveUpAndDownClassName = () => {
+  const moveUpAndDownClassName = (): string => {
     if (clickElId.current! < interSectElId.current!) {
       return 'move_up';
     } else if (clickElId.current! > interSectElId.current!) return 'move_down';
-    return '_';
+    return '';
   };
   const onDragEnter = (e: React.DragEvent<HTMLDivElement>): void => {
+    const moveClassName = moveUpAndDownClassName();
     if (lastLeaveTarget.current)
       lastLeaveTarget.current!.classList.remove('move_down');
     const $target = e.target as HTMLDivElement;
     setDragItemId.interSectItem(todo.id);
-    if (clickElId.current !== interSectElId.current)
-      $target.classList.add(moveUpAndDownClassName());
+    if (clickElId.current !== interSectElId.current && moveClassName)
+      $target.classList.add(moveClassName);
     lastLeaveTarget.current = $target;
   };
 
@@ -92,7 +92,7 @@ const TodoItem: React.FC<Props> = ({
     e.preventDefault();
   };
 
-  const onDragLeave = (e: any): void => {
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>): void => {
     const $target = e.target as HTMLDivElement;
     $target.classList.remove('move_up');
   };
@@ -117,7 +117,7 @@ const TodoItem: React.FC<Props> = ({
           onClick={updateState}
           className={STATUS_CLASS_NAME[todo.stateId]}
         >
-          {status[todo.stateId].state}
+          {STATUS[todo.stateId].state}
         </StatusButton>
         <DeleteIcon onClick={handleDelete} />
       </RSide>
