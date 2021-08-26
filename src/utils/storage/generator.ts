@@ -6,7 +6,7 @@ export default class Generator {
     !this.load() && this.save();
   }
 
-  save<T>(data: T | null = null): void {
+  save<T>(data: T | [] = []): void {
     return localStorage.setItem(this.key, JSON.stringify(data));
   }
 
