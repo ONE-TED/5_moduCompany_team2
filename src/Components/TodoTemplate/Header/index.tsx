@@ -35,6 +35,7 @@ const StyledHeader = styled.header`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 20;
 `;
 
 const Container = styled.div`

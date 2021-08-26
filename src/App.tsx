@@ -3,7 +3,8 @@ import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyles } from 'Styles/GlobalStyles';
 import { theme } from 'Styles/theme';
-import Layout from 'Components/Layout';
+
+import Home from 'Pages/Home';
 
 const App: React.FC = () => {
   // const [todoData, setTodoData] = useState(task[0].todos);
@@ -11,7 +12,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <Layout />
+      <Home />
     </ThemeProvider>
   );
 };
