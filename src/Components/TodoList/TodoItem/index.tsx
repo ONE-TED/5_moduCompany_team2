@@ -19,7 +19,7 @@ interface IProps {
   interSectElId: { current: number | null };
   lastLeaveTarget: { current: HTMLDivElement | null };
 }
-interface IObjetIndexTypes {
+interface IObjectIndex {
   [key: number]: string;
 }
 
@@ -38,7 +38,7 @@ const STATUS = [
   },
 ];
 
-const STATUS_CLASS_NAME: IObjetIndexTypes = {
+const STATUS_CLASS_NAME: IObjectIndex = {
   0: 'todo',
   1: 'in-progress',
   2: 'done',

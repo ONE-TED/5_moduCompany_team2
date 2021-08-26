@@ -41,9 +41,9 @@ const TodoList: React.FC<IProps> = ({ data, setTodoData }) => {
   };
   const sortStateData = (): Array<ITodoTypes> => {
     const updateData = [...data];
-    const grapedItem = updateData[clickElId.current];
+    const clickedItemData = updateData[clickElId.current];
     updateData.splice(clickElId.current, 1); //자르고
-    updateData.splice(interSectElId.current, 0, grapedItem);
+    updateData.splice(interSectElId.current, 0, clickedItemData);
     return updateData;
   };
   const switchStateData = (): void => {
