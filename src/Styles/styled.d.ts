@@ -16,6 +16,7 @@ declare module 'styled-components' {
       gray: string;
       darkLine: string;
       strongDarkBg: string;
+      strongDarkBgHover: string;
       darkBg: string;
       formBg: string;
     };

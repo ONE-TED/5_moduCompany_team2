@@ -11,6 +11,7 @@ const theme: DefaultTheme = {
     lighter: '#E0E6E9',
     darkLine: '#393C49',
     strongDarkBg: '#1F1D2B',
+    strongDarkBgHover: '#403E4F',
     darkBg: '#252836',
     formBg: '#2D303E',
     green: '#50D1AA',
