@@ -5,27 +5,17 @@ import DatePicker from 'react-datepicker';
 import { ReactComponent as PlusIcon } from 'Assets/icon/ic_plus.svg';
 import { todoStorage } from 'utils/storage';
 import { getDayMonthYear } from 'utils/date';
+import { setSelectedTask, setTaskItem } from 'Store/actions/taskActions';
+import { ITodo, ITask } from 'Store/types';
 import useToast from 'Hooks/useToast';
+import useTaskContext from 'Hooks/useTaskContext';
 import Toast from 'Components/Toast';
 import Input from 'Components/Input';
 import Button from 'Components/Button';
 import CustomDatePicker from 'Components/CustomDatePicker';
 
-interface ITodo {
-  id: number;
-  taskName: string;
-  stateId: 1 | 2 | 3; // 여기 stateId로 바뀌였어요!
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
-}
-
-interface ITask {
-  taskDueDate: string;
-  todos: ITodo[];
-}
-
 const TodoCreator: React.FC = () => {
+  const { state, dispatch } = useTaskContext();
   const [todoText, setTodoText] = useState<string>('');
   const [targetDate, setTargetDate] = useState<Date | null>(null);
   const { isShow, message, toast } = useToast();
@@ -61,7 +51,7 @@ const TodoCreator: React.FC = () => {
     const todo: ITodo = {
       id: Date.now(),
       taskName: todoText,
-      stateId: 1,
+      stateId: 0,
       createdAt: getDayMonthYear(),
       updatedAt: getDayMonthYear(),
       dueDate,
@@ -93,7 +83,11 @@ const TodoCreator: React.FC = () => {
         return 0;
       }
     });
-    todoStorage.save(task);
+    console.log(newTaskItem);
+    dispatch(setTaskItem(task));
+    if (newTaskItem.taskDueDate === state.selectedTask?.taskDueDate) {
+      dispatch(setSelectedTask(newTaskItem));
+    }
     setTargetDate(null);
     setTodoText('');
     toast('등록되었습니다.');

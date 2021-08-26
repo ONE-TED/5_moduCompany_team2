@@ -2,23 +2,17 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 
 import { getElementIndex } from 'utils/DragNdrop';
+import useTaskContext from 'Hooks/useTaskContext';
+import { setTodos } from 'Store/actions/taskActions';
 import TodoItem from 'Components/TodoList/TodoItem';
-
-export interface ITodoTypes {
-  id: number;
-  taskName: string;
-  stateId: number;
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
-}
+import { ITodo, ITask } from 'Store/types';
 
 interface IProps {
-  data: Array<ITodoTypes>;
-  setTodoData: (newState: Array<ITodoTypes>) => void;
+  filterTodos: ITodo[];
 }
 
-const TodoList: React.FC<IProps> = ({ data, setTodoData }) => {
+const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
+  const { dispatch } = useTaskContext();
   const [checkedId, setCheckedId] = useState<number[]>([]); // 체크된 id 배열입니다 [1523,5342,2342]
   const handleCheckedId = (id: number): void => {
     if (!checkedId.includes(id)) {
@@ -39,15 +33,18 @@ const TodoList: React.FC<IProps> = ({ data, setTodoData }) => {
       interSectElId.current = getElementIndex(data, id);
     },
   };
-  const sortStateData = (): Array<ITodoTypes> => {
+  const sortStateData = (): ITodo[] => {
     const updateData = [...data];
     const clickedItemData = updateData[clickElId.current];
     updateData.splice(clickElId.current, 1); //자르고
     updateData.splice(interSectElId.current, 0, clickedItemData);
+    console.log(updateData);
     return updateData;
   };
   const switchStateData = (): void => {
-    setTodoData([...sortStateData()]);
+    // setTodoData([...sortStateData()]);
+    console.log(data);
+    dispatch(setTodos(sortStateData()));
   };
   //drag n drop
   return (

@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import Button from 'Components/Button';
-import { ITodoTypes } from 'Components/TodoList';
+import { ITodo, ITask } from 'Store/types';
+import { deleteTodoItem, setTaskItem } from 'Store/actions/taskActions';
+import useTaskContext from 'Hooks/useTaskContext';
 
 interface IProps {
-  todo: ITodoTypes;
+  todo: ITodo;
   checkedId: number[];
   handleCheckedId(stateId: number): void;
   setDragItemId: {
@@ -53,9 +55,30 @@ const TodoItem: React.FC<IProps> = ({
   clickElId,
   lastLeaveTarget,
 }) => {
+  const { state, dispatch } = useTaskContext();
+
   const handleDelete = (): void => {
     console.log(todo.id, '지워질 아이디');
+    if (state.selectedTask) {
+      const selectedDate = state.selectedTask.taskDueDate;
+      const findIndex = state.taskList.findIndex(
+        (item) => item.taskDueDate === selectedDate,
+      );
+      const taskDueDate = state.selectedTask!.taskDueDate;
+      const newTodos = state.selectedTask!.todos.filter(
+        (item) => item.id !== todo.id,
+      );
+      const aaa: ITask[] = [...state.taskList];
+      aaa[findIndex] = {
+        taskDueDate: taskDueDate,
+        todos: newTodos,
+      };
+      console.log(state);
+      dispatch(setTaskItem(aaa));
+      dispatch(deleteTodoItem(todo.id));
+    }
   };
+
   const updateState = (): void => {
     console.log(todo.id, todo.stateId);
   };
@@ -109,8 +132,8 @@ const TodoItem: React.FC<IProps> = ({
       onDragLeave={onDragLeave}
     >
       <LSide>
-        <CheckIconWrapper onClick={() => handleCheckedId(todo.stateId)}>
-          {checkedId.includes(todo.stateId) && <CheckIcon />}
+        <CheckIconWrapper onClick={() => handleCheckedId(todo.id)}>
+          {checkedId.includes(todo.id) && <CheckIcon />}
         </CheckIconWrapper>
         <Text>{todo.taskName}</Text>
       </LSide>
@@ -174,7 +197,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 56px;
+  height: 68px;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.darkLine};
@@ -188,12 +211,12 @@ const Container = styled.div`
   &.grap {
     background-color: ${({ theme }) => theme.colors.darkLine};
   }
-  transition: 0.6s;
+  transition: 0.4s;
   &.move_up {
-    margin-bottom: 14px;
+    margin-bottom: 18px;
   }
   &.move_down {
-    margin-top: 14px;
+    margin-top: 18px;
   }
 `;
 const StatusButton = styled(Button)`
