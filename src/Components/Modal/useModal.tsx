@@ -3,25 +3,29 @@ import Modal from 'Components/Modal';
 
 import styled from 'styled-components';
 
-interface IModal {
-  component: JSX.Element | JSX.Element[];
-}
-
-const useModal = ({ component }: IModal) => {
+const useModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
   const open = () => {
+    setIsClosing(false);
     setIsOpen(true);
   };
   const close = () => {
     setIsOpen(false);
   };
-  // const modalRender = (): JSX.Element | JSX.Element[] => {
-  //   return <Modal>{isOpen && component}</Modal>
-  const modalRender = (): JSX.Element | JSX.Element[] | boolean => {
+
+  const willClose = () => {
+    setIsClosing(true);
+  };
+
+  const modalRender = (
+    component: JSX.Element,
+  ): JSX.Element | JSX.Element[] | boolean => {
     return (
       isOpen && (
         <Modal>
-          <ModalDimmer onClick={() => close()}></ModalDimmer>
+          <ModalDimmer onClick={() => willClose()}></ModalDimmer>
           {component}
         </Modal>
       )
@@ -31,6 +35,8 @@ const useModal = ({ component }: IModal) => {
     open,
     close,
     modalRender,
+    isClosing,
+    willClose,
   };
 };
 
