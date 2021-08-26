@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import { createPortal } from 'react-dom';
 
-const Modal: React.FC = (props) => {
-  return <StyledHeader>Header</StyledHeader>;
+const modalRoot = document.querySelector('#modal-root') as HTMLElement;
+
+const Modal: React.FC = ({ children }) => {
+  return createPortal(children, modalRoot);
 };
 
 export default Modal;
-
-const StyledHeader = styled.div``;
