@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button: React.FC<Props> = ({ children, ...restProps }) => {

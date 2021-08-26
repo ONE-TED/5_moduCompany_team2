@@ -45,13 +45,13 @@ const TodoCreator: React.FC = () => {
 
   const handleClick = useCallback(() => {
     //TODO Refactoring
-    if (inputRef.current || !todoText) {
+    if (!todoText) {
       toast('할일을 입력해주세요.');
       inputRef.current?.focus();
       return;
     }
 
-    if (datePickerRef.current || !targetDate) {
+    if (!targetDate) {
       toast('목표 날짜를 입력해주세요.');
       datePickerRef.current?.setFocus();
       return;
