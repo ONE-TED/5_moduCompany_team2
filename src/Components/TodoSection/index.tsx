@@ -32,15 +32,26 @@ const TodoSection: React.FC = () => {
       AllTasksForSort.sort((a: ITask, b: ITask) => {
         return new Date(a.taskDueDate) < new Date(b.taskDueDate) ? 1 : -1;
       });
-      setAllTasks(AllTasksForSort);
     } else {
       AllTasksForSort.sort((a: ITask, b: ITask) => {
         return new Date(a.taskDueDate) > new Date(b.taskDueDate) ? 1 : -1;
       });
-      setAllTasks(AllTasksForSort);
     }
+    setAllTasks(AllTasksForSort);
+    todoStorage.save(AllTasksForSort);
 
     setIsAscending(!isAscending);
+  };
+
+  const handleRemoveTodoList = (date: string): void => {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+      const allTasksAfterRemoval = allTasks.filter(
+        (task) => task.taskDueDate !== date,
+      );
+
+      setAllTasks(allTasksAfterRemoval);
+      todoStorage.save(allTasksAfterRemoval);
+    }
   };
 
   return (
@@ -72,7 +83,11 @@ const TodoSection: React.FC = () => {
       {allTasks.length > 0 ? (
         <StyledTodoList>
           {allTasks.map((item: ITask) => (
-            <Card key={item.taskDueDate} todoItems={item.todos} />
+            <Card
+              key={item.taskDueDate}
+              todoItems={item.todos}
+              handleRemoveTodoList={handleRemoveTodoList}
+            />
           ))}
         </StyledTodoList>
       ) : (

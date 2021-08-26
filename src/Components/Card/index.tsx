@@ -16,7 +16,7 @@ interface TodoTypes {
 
 interface CardProps {
   todoItems: TodoTypes[];
-  // children: React.ReactNode;
+  handleRemoveTodoList: (date: string) => void;
 }
 
 interface Map {
@@ -53,7 +53,7 @@ const CIRCLE_MEASUREMENT = {
   RADIUS: 69,
 };
 
-const Card: React.FC<CardProps> = ({ todoItems }) => {
+const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
   const { STROKEWIDTH, RADIUS } = CIRCLE_MEASUREMENT;
   const CIRCUMFERENCE = 2 * Math.PI * (RADIUS - STROKEWIDTH / 2);
 
@@ -117,7 +117,9 @@ const Card: React.FC<CardProps> = ({ todoItems }) => {
         </ContentInCircle>
       </CircleProgressWrapper>
       <CardBox>
-        <DeleteButton>
+        <DeleteButton
+          onClick={() => handleRemoveTodoList(todoItems[0].dueDate)}
+        >
           <DeleteIcon />
         </DeleteButton>
         <SummaryOfTodos>
