@@ -45,8 +45,9 @@ export default useModal;
 const ModalDimmer = styled.div`
   position: fixed;
   left: 0;
-  top: 0;
+  top: 100px;
   background-color: rgba(0, 0, 0, 0.7);
   width: 100vw;
   height: 100vh;
+  z-index: 9997;
 `;

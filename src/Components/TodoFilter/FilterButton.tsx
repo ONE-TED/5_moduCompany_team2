@@ -20,6 +20,10 @@ const FilterButton: React.FC<IFilterButtonProps> = ({
 };
 
 const StyledFilterButton = styled(Button)<IFilterButtonProps>`
+  border: 1px solid ${({ theme }) => theme.colors.orange};
+  border-radius: 3px;
+  padding: 10px;
+  font-weight: bold;
   ${({ toggleClick, theme }) =>
     toggleClick
       ? css`

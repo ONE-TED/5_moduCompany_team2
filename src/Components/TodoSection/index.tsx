@@ -2,31 +2,41 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Card from 'Components/Card';
-
 import { todoStorage } from 'utils/storage';
-
+import useTaskContext from 'Hooks/useTaskContext';
+import { ITodo, ITask } from 'Store/types';
+import { setSelectedTask } from 'Store/actions/taskActions';
+import { setTaskItem } from 'Store/actions/taskActions';
 import { ReactComponent as ArrowDownIcon } from 'Assets/icon/ic_arrow-down.svg';
 
-interface ITodo {
-  id: number;
-  taskName: string;
-  stateId: 0 | 1 | 2;
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
+// interface ITodo {
+//   id: number;
+//   taskName: string;
+//   stateId: 0 | 1 | 2;
+//   createdAt: string;
+//   updatedAt: string;
+//   dueDate: string;
+// }
+
+// interface ITask {
+//   taskDueDate: string;
+//   todos: ITodo[];
+// }
+
+interface IProp {
+  open: () => void;
 }
 
-interface ITask {
-  taskDueDate: string;
-  todos: ITodo[];
-}
-
-const TodoSection: React.FC = () => {
+const TodoSection: React.FC<IProp> = ({ open }) => {
+  const {
+    state: { taskList: allTasks },
+    dispatch,
+  } = useTaskContext();
   const [isAscending, setIsAscending] = useState<boolean>(false);
-  const [allTasks, setAllTasks] = useState<ITask[]>(todoStorage.load() ?? []);
+  // const [allTasks, setAllTasks] = useState<ITask[]>(taskList);
 
   const handleToggleSort = () => {
-    const AllTasksForSort = JSON.parse(JSON.stringify(allTasks));
+    const AllTasksForSort = allTasks;
 
     if (isAscending) {
       AllTasksForSort.sort((a: ITask, b: ITask) => {
@@ -37,9 +47,7 @@ const TodoSection: React.FC = () => {
         return new Date(a.taskDueDate) > new Date(b.taskDueDate) ? 1 : -1;
       });
     }
-    setAllTasks(AllTasksForSort);
-    todoStorage.save(AllTasksForSort);
-
+    setTaskItem([...AllTasksForSort]);
     setIsAscending(!isAscending);
   };
 
@@ -48,8 +56,7 @@ const TodoSection: React.FC = () => {
       const allTasksAfterRemoval = allTasks.filter(
         (task) => task.taskDueDate !== date,
       );
-
-      setAllTasks(allTasksAfterRemoval);
+      setTaskItem(allTasksAfterRemoval);
       todoStorage.save(allTasksAfterRemoval);
     }
   };
@@ -83,11 +90,7 @@ const TodoSection: React.FC = () => {
       {allTasks.length > 0 ? (
         <StyledTodoList>
           {allTasks.map((item: ITask) => (
-            <Card
-              key={item.taskDueDate}
-              todoItems={item.todos}
-              handleRemoveTodoList={handleRemoveTodoList}
-            />
+            <Card open={open} key={item.taskDueDate} item={item} />
           ))}
         </StyledTodoList>
       ) : (

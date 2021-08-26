@@ -1,22 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
+import { ITask } from 'Store/types';
+import useTaskContext from 'Hooks/useTaskContext';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
+import { deleteTaskItem } from 'Store/actions/taskActions';
+import { setSelectedTask } from 'Store/actions/taskActions';
 import greenBullet from 'Assets/images/green-bullet.png';
 import redBullet from 'Assets/images/red-bullet.png';
 import blueBullet from 'Assets/images/blue-bullet.png';
-interface TodoTypes {
-  id: number;
-  taskName: string;
-  stateId: number;
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
-}
 
 interface CardProps {
-  todoItems: TodoTypes[];
-  handleRemoveTodoList: (date: string) => void;
+  item: ITask;
+  open: () => void;
 }
 
 interface Map {
@@ -53,7 +49,9 @@ const CIRCLE_MEASUREMENT = {
   RADIUS: 69,
 };
 
-const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
+const Card: React.FC<CardProps> = ({ item, open }) => {
+  const { dispatch } = useTaskContext();
+  const { todos: todoItems, taskDueDate } = item;
   const { STROKEWIDTH, RADIUS } = CIRCLE_MEASUREMENT;
   const CIRCUMFERENCE = 2 * Math.PI * (RADIUS - STROKEWIDTH / 2);
 
@@ -66,11 +64,11 @@ const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
     });
   countTodosByStatus.reverse();
 
-  // console.log(countTodosByStatus);
+  const percent = isNaN((countTodosByStatus[0] / todoItems.length) * 100)
+    ? 0
+    : (countTodosByStatus[0] / todoItems.length) * 100;
 
-  const percent = (countTodosByStatus[0] / todoItems.length) * 100;
-
-  const dateObject: Date = new Date(todoItems[0].dueDate);
+  const dateObject: Date = new Date(taskDueDate);
   const month: number = dateObject.getMonth() + 1;
   const date: number = dateObject.getDate();
   const day: string = dateObject.getDay().toString();
@@ -85,12 +83,24 @@ const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
         barRef.current.style.strokeDasharray = CIRCUMFERENCE.toString();
       }
     }
-
     showProgress(percent);
   }, [todoItems]);
 
+  const selectCard = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(item.taskDueDate);
+    open();
+    dispatch(setSelectedTask(item));
+  };
+
+  const handleRemoveTodoList = (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ): void => {
+    e.stopPropagation();
+    dispatch(deleteTaskItem(taskDueDate));
+  };
+
   return (
-    <CardWrapper>
+    <CardWrapper onClick={selectCard}>
       <CircleProgressWrapper>
         <svg
           width={RADIUS * 2}
@@ -117,9 +127,7 @@ const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
         </ContentInCircle>
       </CircleProgressWrapper>
       <CardBox>
-        <DeleteButton
-          onClick={() => handleRemoveTodoList(todoItems[0].dueDate)}
-        >
+        <DeleteButton onClick={handleRemoveTodoList}>
           <DeleteIcon />
         </DeleteButton>
         <SummaryOfTodos>
