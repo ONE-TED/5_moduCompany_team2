@@ -139,6 +139,8 @@ const CardWrapper = styled.div.attrs(() => ({
 }))`
   position: relative;
   cursor: pointer;
+  /* margin: 100px 51px; */
+  margin-bottom: 200px;
 `;
 
 const CardBox = styled.div`

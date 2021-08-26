@@ -3,13 +3,14 @@ import { ThemeProvider } from 'styled-components';
 
 import { GlobalStyles } from 'Styles/GlobalStyles';
 import { theme } from 'Styles/theme';
-import Layout from 'Components/Layout';
+
+import Home from 'Pages/Home';
 
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <Layout />
+      <Home />
     </ThemeProvider>
   );
 };
