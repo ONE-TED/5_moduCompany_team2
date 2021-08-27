@@ -46,7 +46,9 @@ const taskReducer = (state: TaskState, action: TaskAction): TaskState => {
           taskDueDate: state.selectedTask!.taskDueDate,
           todos: state.selectedTask!.todos.map((item) => {
             if (item.id === action.payload.id) {
-              item.stateId = action.payload.state;
+              let newStateId = action.payload.state as number;
+              newStateId = (newStateId + 1) % 3;
+              item.stateId = newStateId as 0 | 1 | 2;
             }
             return item;
           }),
