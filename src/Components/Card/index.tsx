@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 import { ITask } from 'Store/types';
 import useTaskContext from 'Hooks/useTaskContext';
-import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import { deleteTaskItem } from 'Store/actions/taskActions';
 import { setSelectedTask } from 'Store/actions/taskActions';
 import greenBullet from 'Assets/images/green-bullet.png';
 import redBullet from 'Assets/images/red-bullet.png';
 import blueBullet from 'Assets/images/blue-bullet.png';
+import DeleteButton from 'Components/DeleteButton';
 
 interface CardProps {
   item: ITask;
@@ -87,7 +87,6 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
   }, [todoItems, percent]);
 
   const selectCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(item.taskDueDate);
     open();
     dispatch(setSelectedTask(item));
   };
@@ -132,9 +131,7 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
         </ContentInCircle>
       </CircleProgressWrapper>
       <CardBox>
-        <DeleteButton onClick={handleRemoveTodoList}>
-          <DeleteIcon />
-        </DeleteButton>
+        <StyledDeleteButton onClick={handleRemoveTodoList} confirm />
         <SummaryOfTodos>
           {countTodosByStatus.map((count, i) => (
             <li key={status[status.length - 1 - i].state}>{`${
@@ -158,6 +155,7 @@ const CardBox = styled.div`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.strongDarkBg};
+  transition: background-color 0.2s;
 `;
 
 const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
@@ -168,6 +166,7 @@ const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
 }))`
   fill: ${({ theme }) => theme.colors.strongDarkBg};
   stroke: #e6e6e6;
+  transition: fill 0.2s;
 `;
 
 const CardWrapper = styled.div`
@@ -232,16 +231,10 @@ const ContentInCircle = styled.div`
   }
 `;
 
-const DeleteButton = styled.button`
+const StyledDeleteButton = styled(DeleteButton)`
   position: absolute;
   right: 6px;
   top: 16px;
-
-  &:hover {
-    svg path {
-      fill: ${({ theme }) => theme.colors.primary};
-    }
-  }
 `;
 
 const SummaryOfTodos = styled.ul`
