@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { IFilterItem } from './useTodoFilter';
 import style from 'styled-components';
 import FilterButton from 'Components/TodoFilter/FilterButton';
-import useTaskContext from 'Hooks/useTaskContext';
 
 interface IFilterProps {
   filterList: IFilterItem[];
@@ -10,8 +9,6 @@ interface IFilterProps {
 }
 
 const TodoFilter: React.FC<IFilterProps> = ({ filterList, handleFilter }) => {
-  const { state, dispatch } = useTaskContext();
-
   return (
     <TodoFilterWrapper>
       {filterList.map((filterItem) => (
@@ -29,7 +26,8 @@ const TodoFilter: React.FC<IFilterProps> = ({ filterList, handleFilter }) => {
 
 const TodoFilterWrapper = style.div`
   width: 100%;
-  min-width: 260px;
-  flex-wrap : nowrap;
+  display: flex;
+  justify-content: start;
+  flex-wrap : wrap;
 `;
 export default TodoFilter;

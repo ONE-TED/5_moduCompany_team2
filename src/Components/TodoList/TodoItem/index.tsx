@@ -236,20 +236,20 @@ const Container = styled.div`
   }
 `;
 const StatusButton = styled(Button)`
-  width: 56px;
+  width: 60px;
   height: 20px;
   &:hover {
     opacity: 0.9;
   }
   &.todo {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.red};
   }
   &.done {
     background-color: ${({ theme }) => theme.colors.green};
   }
   &.in-progress {
-    background-color: ${({ theme }) => theme.colors.lighter};
-    color: ${({ theme }) => theme.colors.gray};
+    background-color: ${({ theme }) => theme.colors.blue};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 const Text = styled.span`

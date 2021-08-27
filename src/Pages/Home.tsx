@@ -7,11 +7,17 @@ import useModal from 'Components/Modal/useModal';
 import TodoModal from 'Components/Modal/TodoModal';
 
 const Home: React.FC = () => {
-  const { open, close, modalRender, isClosing, willClose } = useModal();
+  const { open, close, modalRender, isClosing, visible } = useModal();
   return (
     <TodoTemplate>
       <TodoSection open={open} />
-      {modalRender(<TodoModal close={close} isClosing={isClosing}></TodoModal>)}
+      {modalRender(
+        <TodoModal
+          visible={visible}
+          close={close}
+          isClosing={isClosing}
+        ></TodoModal>,
+      )}
     </TodoTemplate>
   );
 };

@@ -86,7 +86,7 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
     showProgress(percent);
   }, [todoItems, percent]);
 
-  const selectCard = (e: React.MouseEvent<HTMLDivElement>) => {
+  const selectCard = () => {
     open();
     dispatch(setSelectedTask(item));
   };
@@ -98,10 +98,16 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
     dispatch(deleteTaskItem(taskDueDate));
   };
 
+  const handleEnterCard = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    e.keyCode === 13 && selectCard();
+  };
+
   return (
     <CardWrapper
       onClick={selectCard}
+      onKeyDown={handleEnterCard}
       role="button"
+      tabIndex={0}
       aria-haspopup="true"
       aria-selected={taskDueDate === selectedTask?.taskDueDate}
     >

@@ -50,6 +50,7 @@ const Wrapper = styled.dialog`
   left: 50%;
   width: 470px;
   border: 0;
+  background: transparent;
   transform: translateX(-50%);
   z-index: 10000;
 `;

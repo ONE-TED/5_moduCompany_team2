@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import Card from 'Components/Card';
-import { todoStorage } from 'utils/storage';
 import useTaskContext from 'Hooks/useTaskContext';
-import { ITodo, ITask } from 'Store/types';
-import { setSelectedTask } from 'Store/actions/taskActions';
+import { ITask } from 'Store/types';
 import { setTaskItem } from 'Store/actions/taskActions';
 import { ReactComponent as ArrowDownIcon } from 'Assets/icon/ic_arrow-down.svg';
 

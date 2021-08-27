@@ -10,6 +10,7 @@ import { setSelectedTask } from 'Store/actions/taskActions';
 interface IProps {
   isClosing: boolean;
   close: () => void;
+  visible: boolean;
 }
 
 const initValueFilterList = [
@@ -39,21 +40,22 @@ const initValueFilterList = [
   },
 ];
 
-const TodoModal: React.FC<IProps> = ({ isClosing, close }) => {
-  const [visible, setVisible] = useState(false);
+const TodoModal: React.FC<IProps> = ({ isClosing, close, visible }) => {
+  // const [visible, setVisible] = useState(false);
   const { state, dispatch } = useTaskContext();
   const { filterList, filterTodos, handleFilter } = useTodoFilter({
     todos: state.selectedTask!.todos,
     filter: initValueFilterList,
   });
-  useEffect(() => {
-    setVisible(true);
-  }, []);
+  // useEffect(() => {
+  //   setVisible(true);
+  //   // return () => setVisible(false);
+  // }, []);
 
   const handleClose = () => {
     if (isClosing) {
       dispatch(setSelectedTask({ taskDueDate: '', todos: [] }));
-      setVisible(false);
+      // setVisible(false);
       close();
     }
   };
@@ -64,6 +66,7 @@ const TodoModal: React.FC<IProps> = ({ isClosing, close }) => {
       visible={visible}
       isClosing={isClosing}
     >
+      <h2 className="a11y">{state.selectedTask?.taskDueDate} 할일 목록</h2>
       <Title>{state.selectedTask?.taskDueDate}</Title>
       <TodoFilter filterList={filterList} handleFilter={handleFilter} />
       <TodoList filterTodos={filterTodos} />
@@ -75,7 +78,7 @@ const TodoModal: React.FC<IProps> = ({ isClosing, close }) => {
   );
 };
 
-const Container = styled.div<{ visible: boolean; isClosing: boolean }>`
+const Container = styled.article<{ visible: boolean; isClosing: boolean }>`
   position: fixed;
   left: 100%;
   top: 0;

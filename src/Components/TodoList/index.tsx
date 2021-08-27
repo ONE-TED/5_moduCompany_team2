@@ -143,6 +143,8 @@ const ItemsDelete = styled.div`
 `;
 
 const NonTodoItemsNoti = styled.div`
-  margin: 20px 10px 0 10px;
+  margin: 39px 10px 0 10px;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};
+  text-align: center;
 `;

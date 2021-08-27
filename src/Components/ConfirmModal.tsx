@@ -26,7 +26,6 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
 
   const handleOpen = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    console.log(e.target);
     setModalOpener(document.activeElement);
     setIsOpen(true);
     setTimeout(() => modalRef.current?.focus());
@@ -35,7 +34,6 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
   const handleClose = useCallback(() => {
     setIsOpen(false);
     modalOpener && modalOpener.focus();
-    console.log(modalOpener);
   }, [modalOpener]);
 
   const handleDimClose = (e: React.MouseEvent) => {
