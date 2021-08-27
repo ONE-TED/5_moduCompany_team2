@@ -11,14 +11,13 @@ const initialState: TaskState = {
   selectedTask: null,
 };
 
-export const TaskContext = React.createContext<TaskContextType | null>(null);
+export const TaskContext = React.createContext({} as TaskContextType);
 
 export const TaskProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(taskReducer, initialState);
 
   useEffect(() => {
     todoStorage.save(state.taskList);
-    console.log(state);
   }, [state]);
 
   return (
