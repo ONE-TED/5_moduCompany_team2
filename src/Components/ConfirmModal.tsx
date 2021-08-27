@@ -36,6 +36,15 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
     modalOpener && modalOpener.focus();
   }, [modalOpener]);
 
+  const handleDimClose = (e: React.MouseEvent) => {
+    e.target === e.currentTarget && handleClose();
+  };
+
+  const handleConfirm = () => {
+    cb();
+    handleClose();
+  };
+
   const handleKeyTrap = useCallback((e: KeyboardEvent) => {
     if (!modalRef.current) {
       return;
@@ -59,11 +68,6 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
     }
   }, []);
 
-  const handleConfirm = () => {
-    cb();
-    handleClose();
-  };
-
   useEffect(() => {
     const keyListenerMap = new Map([
       [27, handleClose],
@@ -85,7 +89,7 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
       {typeof trigger === 'function' && trigger({ handleOpen, isOpen })}
       {isOpen &&
         createPortal(
-          <Wrapper>
+          <Wrapper onClick={handleDimClose}>
             <StyledModal
               ref={modalRef}
               className={className}
@@ -94,12 +98,12 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
             >
               <Title>{message}</Title>
               <Content>
-                <ConfirmButton type="button" onClick={cb}>
+                <ConfirmButton type="button" onClick={handleConfirm}>
                   확인
                 </ConfirmButton>
-                <CancleButton type="button" onClick={handleConfirm}>
+                <CancelButton type="button" onClick={handleConfirm}>
                   취소
-                </CancleButton>
+                </CancelButton>
               </Content>
             </StyledModal>
           </Wrapper>,
@@ -131,7 +135,7 @@ const StyledModal = styled.dialog`
   border-radius: 8px;
   border: 0;
   padding: 40px 32px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.formBg};
 `;
 
 const Title = styled.h2`
@@ -141,7 +145,7 @@ const Title = styled.h2`
   font-size: 18px;
   line-height: 1.555;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.colors.white};
   text-align: center;
 `;
 
@@ -154,9 +158,11 @@ const buttonMixin = css`
   width: 296px;
   height: 55px;
   border-radius: 4px;
+  padding: 0 14px;
   font-size: 18px;
   line-height: 1.555;
   font-weight: 700;
+  transition: background-color 0.2s ease;
 
   &:not(:last-child) {
     margin-bottom: 8px;
@@ -165,11 +171,19 @@ const buttonMixin = css`
 
 const ConfirmButton = styled.button`
   ${buttonMixin};
-  background-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryDark};
+  }
 `;
-const CancleButton = styled.button`
+const CancelButton = styled.button`
   ${buttonMixin};
-  color: ${({ theme }) => theme.colors.dark};
-  background-color: ${({ theme }) => theme.colors.light};
+  color: ${({ theme }) => theme.colors.formBg};
+  background-color: ${({ theme }) => theme.colors.white};
+  //background-color: #e0e2e7;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.light};
+  }
 `;
