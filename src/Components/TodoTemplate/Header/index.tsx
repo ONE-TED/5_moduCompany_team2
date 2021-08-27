@@ -52,7 +52,19 @@ const GnbLeft = styled.div`
   justify-content: flex-start;
 `;
 
-const Logo = styled.h1``;
+const Logo = styled.h1`
+  @media screen and (max-width: 1200px) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+`;
 
 const LogoLink = styled.a`
   display: block;
@@ -68,6 +80,10 @@ const DateWrap = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+
+  @media screen and (max-width: 1200px) {
+    visibility: hidden;
+  }
 `;
 
 const StyledDate = styled.time`

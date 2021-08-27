@@ -1,16 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ITodo } from 'Store/types';
-
-import useTaskContext from 'Hooks/useTaskContext';
-
-// export interface Itodo {
-//   id: number;
-//   taskName: string;
-//   stateId: number;
-//   createdAt: string;
-//   updatedAt: string;
-//   dueDate: string;
-// }
 
 export interface IFilterItem {
   readonly filterName: string;
@@ -24,12 +13,17 @@ interface ITodoFilterProps {
   filter: IFilterItem[];
 }
 
+interface ITodoFilter {
+  filterList: IFilterItem[];
+  filterTodos: ITodo[];
+  handleFilter: (filterItem: IFilterItem) => void;
+}
+
 export const useTodoFilter = ({
   todos = [],
   filter = [],
-}: ITodoFilterProps) => {
+}: ITodoFilterProps): ITodoFilter => {
   const [filterList, setFilterList] = useState(filter);
-  const { state, dispatch } = useTaskContext();
 
   const handleFilter = (filterItem: IFilterItem): void => {
     const nextFilterList = filterList.map((prefilterItem) =>

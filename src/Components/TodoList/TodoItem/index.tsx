@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
-import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import Button from 'Components/Button';
 import { ITodo, ITask } from 'Store/types';
 import {
@@ -11,6 +10,7 @@ import {
   setTodoItemState,
 } from 'Store/actions/taskActions';
 import useTaskContext from 'Hooks/useTaskContext';
+import DeleteButton from 'Components/DeleteButton';
 
 interface IProps {
   todo: ITodo;
@@ -89,28 +89,14 @@ const TodoItem: React.FC<IProps> = ({
         (item) => item.taskDueDate === selectedDate,
       );
       const taskDueDate = state.selectedTask!.taskDueDate;
-      const newTaskList: ITask[] = [...state.taskList]; // taskList: todos:[전체]
+      const newTaskList: ITask[] = [...state.taskList];
       newTaskList[findIndex] = {
         taskDueDate: taskDueDate,
         todos: state.selectedTask!.todos,
       };
-      // const itemIndex = newTaskList[findIndex].todos.findIndex(
-      //   (item) => item.id === todo.id,
-      // );
-      // const newTodos = [...newTaskList[findIndex].todos];
-      // const newTodo = newTodos[itemIndex];
-      // newTodo.stateId = ((newTodo.stateId + 1) % 3) as 0 | 1 | 2;
-
-      // const newData: ITask[] = [...state.taskList];
-      // newData[findIndex] = {
-      //   taskDueDate: taskDueDate,
-      //   todos: newTodos,
-      // };
-
       dispatch(setTaskItem(newTaskList));
       dispatch(setTodoItemState(todo.id, todo.stateId)); // todos:[1212]
     }
-    console.log(todo.id, todo.stateId);
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
     e.dataTransfer.effectAllowed = 'move';
@@ -174,7 +160,7 @@ const TodoItem: React.FC<IProps> = ({
         >
           {STATUS[todo.stateId].state}
         </StatusButton>
-        <DeleteIcon onClick={handleDelete} />
+        <DeleteButton onClick={handleDelete} />
       </RSide>
     </Container>
   );
@@ -250,24 +236,31 @@ const Container = styled.div`
   }
 `;
 const StatusButton = styled(Button)`
-  width: 56px;
+  width: 60px;
   height: 20px;
   &:hover {
     opacity: 0.9;
   }
   &.todo {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.red};
   }
   &.done {
     background-color: ${({ theme }) => theme.colors.green};
   }
   &.in-progress {
-    background-color: ${({ theme }) => theme.colors.lighter};
-    color: ${({ theme }) => theme.colors.gray};
+    background-color: ${({ theme }) => theme.colors.blue};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 const Text = styled.span`
   display: inline-block;
   font-size: 1em;
+  min-width: 25px;
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: ${({ theme }) => theme.colors.white};
+  @media screen and (max-width: 1200px) {
+    max-width: 75px;
+  }
 `;
