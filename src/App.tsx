@@ -7,8 +7,6 @@ import { theme } from 'Styles/theme';
 import Home from 'Pages/Home';
 
 const App: React.FC = () => {
-  // const [todoData, setTodoData] = useState(task[0].todos);
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
