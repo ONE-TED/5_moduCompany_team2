@@ -56,14 +56,14 @@ const TodoCreator: React.FC = () => {
       updatedAt: getDayMonthYear(),
       dueDate,
     };
+
     const task = todoStorage.load();
     const findTaskItem = task.find(
       (item: ITask) => item.taskDueDate === dueDate,
     ); //TODO
-    const newTaskItem = findTaskItem
-      ? findTaskItem
-      : { taskDueDate: dueDate, todos: [] };
+    const newTaskItem = findTaskItem ?? { taskDueDate: dueDate, todos: [] };
     newTaskItem.todos.push(todo);
+
     if (findTaskItem) {
       task.map((item: ITask) =>
         item.taskDueDate === newTaskItem.taskDueDate ? newTaskItem : item,
@@ -73,17 +73,9 @@ const TodoCreator: React.FC = () => {
     }
 
     task.sort((a: ITask, b: ITask) => {
-      const aDate = new Date(a.taskDueDate);
-      const bDate = new Date(b.taskDueDate);
-      if (aDate < bDate) {
-        return 1;
-      } else if (aDate > bDate) {
-        return -1;
-      } else {
-        return 0;
-      }
+      return new Date(a.taskDueDate) < new Date(b.taskDueDate) ? 1 : -1;
     });
-    console.log(newTaskItem);
+
     dispatch(setTaskItem(task));
     if (newTaskItem.taskDueDate === state.selectedTask?.taskDueDate) {
       dispatch(setSelectedTask(newTaskItem));
