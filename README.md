@@ -3,7 +3,7 @@
     <img src='https://user-images.githubusercontent.com/51367622/130882614-fdfde471-f2c6-4be5-b4e2-afd6181e310c.png' width="300px;" alt="모두 컴퍼니" />
   </a></p>
 <p align='middle'><img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ONE-TED/init_convention?color=blueviolet"> <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ONE-TED/init_convention"> 
-<h1 align='middle'><a href='https://oneted-moducompany-todolist.netlify.app/'>Demo</a></h1>
+<h1 align='middle'><a href='https://oneted-moducompany-todolist.netlify.app/'> > 배포링크 < </a></h1>
 
 <br/>
 
@@ -14,6 +14,8 @@
 > ❕To-Do List App 만들기❗
 
 ![onted](https://user-images.githubusercontent.com/52653720/131139681-d9701b39-368a-4610-9afd-a6e705c80bd2.JPG)
+  이미지
+  
 ![시연](https://user-images.githubusercontent.com/55486644/131142351-b4cda206-d302-4e2c-8774-f947296802c1.gif)
 
 <br/>
