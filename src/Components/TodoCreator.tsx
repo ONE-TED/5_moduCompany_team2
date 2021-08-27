@@ -17,7 +17,7 @@ import CustomDatePicker from 'Components/CustomDatePicker';
 const TodoCreator: React.FC = () => {
   const { state, dispatch } = useTaskContext();
   const [todoText, setTodoText] = useState<string>('');
-  const [targetDate, setTargetDate] = useState<Date | null>(null);
+  const [targetDate, setTargetDate] = useState<Date | null>(new Date());
   const { isShow, message, toast } = useToast();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,12 +83,10 @@ const TodoCreator: React.FC = () => {
         return 0;
       }
     });
-    console.log(newTaskItem);
     dispatch(setTaskItem(task));
     if (newTaskItem.taskDueDate === state.selectedTask?.taskDueDate) {
       dispatch(setSelectedTask(newTaskItem));
     }
-    setTargetDate(null);
     setTodoText('');
     toast('등록되었습니다.');
   }, [todoText, targetDate]);
