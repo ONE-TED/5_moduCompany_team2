@@ -3,13 +3,7 @@
     <img src='https://user-images.githubusercontent.com/51367622/130882614-fdfde471-f2c6-4be5-b4e2-afd6181e310c.png' width="300px;" alt="모두 컴퍼니" />
   </a></p>
 <p align='middle'><img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ONE-TED/init_convention?color=blueviolet"> <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ONE-TED/init_convention"> 
-<h1 align='middle'><a href='https://github.com/ONE-TED/init_convention'>배포 링크 입력</a></h1>
-
----
-
-🧐[추가 링크 페이지]()에서 더 다양한 내용을 확인해보세요!
-
----
+<h1 align='middle'><a href='https://oneted-moducompany-todolist.netlify.app/'>Demo</a></h1>
 
 <br/>
 
