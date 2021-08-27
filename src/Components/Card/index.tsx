@@ -50,7 +50,8 @@ const CIRCLE_MEASUREMENT = {
 };
 
 const Card: React.FC<CardProps> = ({ item, open }) => {
-  const { dispatch } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
+  const { selectedTask } = state;
   const { todos: todoItems, taskDueDate } = item;
   const { STROKEWIDTH, RADIUS } = CIRCLE_MEASUREMENT;
   const CIRCUMFERENCE = 2 * Math.PI * (RADIUS - STROKEWIDTH / 2);
@@ -100,7 +101,12 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
   };
 
   return (
-    <CardWrapper onClick={selectCard}>
+    <CardWrapper
+      onClick={selectCard}
+      role="button"
+      aria-haspopup="true"
+      aria-selected={taskDueDate === selectedTask?.taskDueDate}
+    >
       <CircleProgressWrapper>
         <svg
           width={RADIUS * 2}
@@ -144,15 +150,6 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
 
 export default React.memo(Card);
 
-const CardWrapper = styled.div.attrs(() => ({
-  tabIndex: '0',
-}))`
-  position: relative;
-  cursor: pointer;
-  /* margin: 100px 51px; */
-  margin-bottom: 200px;
-`;
-
 const CardBox = styled.div`
   position: absolute;
   top: 69px;
@@ -162,13 +159,45 @@ const CardBox = styled.div`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.strongDarkBg};
+`;
 
-  ${CardWrapper}:hover & {
-    background: ${({ theme }) => theme.colors.strongDarkBgHover};
+const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
+  cx,
+  cy,
+  r,
+  strokeWidth,
+}))`
+  fill: ${({ theme }) => theme.colors.strongDarkBg};
+  stroke: #e6e6e6;
+`;
+
+const CardWrapper = styled.div`
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 200px;
+
+  &:hover {
+    ${CardBox} {
+      background: ${({ theme }) => theme.colors.strongDarkBgHover};
+    }
+
+    ${FrameCircle} {
+      fill: ${({ theme }) => theme.colors.strongDarkBgHover};
+    }
   }
 
-  ${CardWrapper}:focus & {
-    background: ${({ theme }) => theme.colors.strongDarkBgHover};
+  ${CardBox} {
+    background: ${(props) =>
+      props['aria-selected']
+        ? props.theme.colors.strongDarkBgHover
+        : props.theme.colors.strongDarkBg};
+  }
+
+  ${FrameCircle} {
+    fill: ${(props) =>
+      props['aria-selected']
+        ? props.theme.colors.strongDarkBgHover
+        : props.theme.colors.strongDarkBg};
   }
 `;
 
@@ -249,22 +278,4 @@ const BarCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
   fill: none;
   stroke: ${({ theme }) => theme.colors.green};
   stroke-linecap: round;
-`;
-
-const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
-  cx,
-  cy,
-  r,
-  strokeWidth,
-}))`
-  fill: ${({ theme }) => theme.colors.strongDarkBg};
-  stroke: #e6e6e6;
-
-  ${CardWrapper}:hover & {
-    fill: ${({ theme }) => theme.colors.strongDarkBgHover};
-  }
-
-  ${CardWrapper}:focus & {
-    fill: ${({ theme }) => theme.colors.strongDarkBgHover};
-  }
 `;
