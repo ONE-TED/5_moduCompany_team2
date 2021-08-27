@@ -57,6 +57,8 @@
 - 3개의 상태에 따라 Todo Item 필터링 (전체 클릭 시 전체 아이템 출력)
 - Todo Item 삭제 기능
 - 일괄 선택하여 한 번에 전체 Todo Item 삭제 기능
+- Todo Item Drag and Drop 기능, 애니메이션 추가
+- Todo의 상태를 클릭시 상태 변경 가능
 
 <br/>  
 <br/>
