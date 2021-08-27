@@ -72,19 +72,18 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
   const month: number = dateObject.getMonth() + 1;
   const date: number = dateObject.getDate();
   const day: string = dateObject.getDay().toString();
+  function showProgress(per: number): void {
+    const progress = per / 100;
+    const dashoffset = CIRCUMFERENCE * (1 - progress);
 
-  useEffect(() => {
-    function showProgress(per: number): void {
-      const progress = per / 100;
-      const dashoffset = CIRCUMFERENCE * (1 - progress);
-
-      if (barRef && barRef.current) {
-        barRef.current.style.strokeDashoffset = dashoffset.toString();
-        barRef.current.style.strokeDasharray = CIRCUMFERENCE.toString();
-      }
+    if (barRef && barRef.current) {
+      barRef.current.style.strokeDashoffset = dashoffset.toString();
+      barRef.current.style.strokeDasharray = CIRCUMFERENCE.toString();
     }
+  }
+  useEffect(() => {
     showProgress(percent);
-  }, [todoItems]);
+  }, [todoItems, percent]);
 
   const selectCard = (e: React.MouseEvent<HTMLDivElement>) => {
     console.log(item.taskDueDate);
