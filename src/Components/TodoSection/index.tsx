@@ -9,25 +9,11 @@ import { setSelectedTask } from 'Store/actions/taskActions';
 import { setTaskItem } from 'Store/actions/taskActions';
 import { ReactComponent as ArrowDownIcon } from 'Assets/icon/ic_arrow-down.svg';
 
-// interface ITodo {
-//   id: number;
-//   taskName: string;
-//   stateId: 0 | 1 | 2;
-//   createdAt: string;
-//   updatedAt: string;
-//   dueDate: string;
-// }
-
-// interface ITask {
-//   taskDueDate: string;
-//   todos: ITodo[];
-// }
-
-interface IProp {
+interface ITodoSectionProps {
   open: () => void;
 }
 
-const TodoSection: React.FC<IProp> = ({ open }) => {
+const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
   const {
     state: { taskList: allTasks },
     dispatch,
@@ -51,15 +37,15 @@ const TodoSection: React.FC<IProp> = ({ open }) => {
     setIsAscending(!isAscending);
   };
 
-  const handleRemoveTodoList = (date: string): void => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      const allTasksAfterRemoval = allTasks.filter(
-        (task) => task.taskDueDate !== date,
-      );
-      setTaskItem(allTasksAfterRemoval);
-      todoStorage.save(allTasksAfterRemoval);
-    }
-  };
+  // const handleRemoveTodoList = (date: string): void => {
+  //   if (confirm('정말로 삭제하시겠습니까?')) {
+  //     const allTasksAfterRemoval = allTasks.filter(
+  //       (task) => task.taskDueDate !== date,
+  //     );
+  //     setTaskItem(allTasksAfterRemoval);
+  //     todoStorage.save(allTasksAfterRemoval);
+  //   }
+  // };
 
   return (
     <>
@@ -104,7 +90,7 @@ const TodoSection: React.FC<IProp> = ({ open }) => {
 
 export default TodoSection;
 
-const TodoListTitle = styled.h1`
+const TodoListTitle = styled.h2`
   color: ${({ theme }) => theme.colors.white};
   font-size: 28px;
   line-height: 140%;
