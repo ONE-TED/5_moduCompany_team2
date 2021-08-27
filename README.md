@@ -2,8 +2,8 @@
   <a href='https://www.moduparking.com/'>
     <img src='https://user-images.githubusercontent.com/51367622/130882614-fdfde471-f2c6-4be5-b4e2-afd6181e310c.png' width="300px;" alt="모두 컴퍼니" />
   </a></p>
-<p align='middle'><img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ONE-TED/init_convention?color=blueviolet"> <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/ONE-TED/init_convention"> 
-<h1 align='middle'><a href='https://oneted-moducompany-todolist.netlify.app/'> > 배포링크 < </a></h1>
+<p align='middle'>
+<h1 align='middle'><a href='https://oneted-moducompany-todolist.netlify.app/'>배포링크</a></h1>
 
 <br/>
 
