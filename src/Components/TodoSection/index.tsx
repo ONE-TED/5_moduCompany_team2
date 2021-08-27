@@ -43,6 +43,16 @@ const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
     setIsAscending(!isAscending);
   };
 
+  // const handleRemoveTodoList = (date: string): void => {
+  //   if (confirm('정말로 삭제하시겠습니까?')) {
+  //     const allTasksAfterRemoval = allTasks.filter(
+  //       (task) => task.taskDueDate !== date,
+  //     );
+  //     setTaskItem(allTasksAfterRemoval);
+  //     todoStorage.save(allTasksAfterRemoval);
+  //   }
+  // };
+
   return (
     <>
       <div
@@ -86,7 +96,7 @@ const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
 
 export default TodoSection;
 
-const TodoListTitle = styled.h1`
+const TodoListTitle = styled.h2`
   color: ${({ theme }) => theme.colors.white};
   font-size: 28px;
   line-height: 140%;

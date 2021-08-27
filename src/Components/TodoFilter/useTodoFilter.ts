@@ -30,32 +30,31 @@ export const useTodoFilter = ({
 }: ITodoFilterProps) => {
   const [filterList, setFilterList] = useState(filter);
   const { state, dispatch } = useTaskContext();
-  const [filterTodos, setFilterTodos] = useState(todos);
-
-  useEffect(() => {
-    setFilterTodos(state.selectedTask!.todos);
-  }, [state]);
 
   const handleFilter = (filterItem: IFilterItem): void => {
     const nextFilterList = filterList.map((prefilterItem) =>
       filterItem.id === prefilterItem.id
-        ? { ...prefilterItem, toggleClick: !prefilterItem.toggleClick }
+        ? { ...prefilterItem, toggleClick: true }
         : { ...prefilterItem, toggleClick: false },
     );
     setFilterList(nextFilterList);
+  };
 
-    if (filterItem.targetId === null) {
-      setFilterTodos(todos);
+  const filterTodos = () => {
+    const filterIndex = filterList.findIndex(
+      (filterItem) => filterItem.toggleClick,
+    );
+    const filter = filterList[filterIndex];
+    if (filter?.targetId == null) {
+      return todos;
     } else {
-      setFilterTodos(
-        todos.filter((todo) => todo.stateId === filterItem.targetId),
-      );
+      return todos.filter((todo) => todo.stateId === filter.targetId);
     }
   };
 
   return {
     filterList,
-    filterTodos,
+    filterTodos: filterTodos(),
     handleFilter,
   };
 };
