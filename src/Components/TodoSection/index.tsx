@@ -1,39 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import Card from 'Components/Card';
-import { todoStorage } from 'utils/storage';
 import useTaskContext from 'Hooks/useTaskContext';
-import { ITodo, ITask } from 'Store/types';
-import { setSelectedTask } from 'Store/actions/taskActions';
+import { ITask } from 'Store/types';
 import { setTaskItem } from 'Store/actions/taskActions';
 import { ReactComponent as ArrowDownIcon } from 'Assets/icon/ic_arrow-down.svg';
 
-// interface ITodo {
-//   id: number;
-//   taskName: string;
-//   stateId: 0 | 1 | 2;
-//   createdAt: string;
-//   updatedAt: string;
-//   dueDate: string;
-// }
-
-// interface ITask {
-//   taskDueDate: string;
-//   todos: ITodo[];
-// }
-
-interface IProp {
+interface ITodoSectionProps {
   open: () => void;
 }
 
-const TodoSection: React.FC<IProp> = ({ open }) => {
+const SECTION_TITLE = 'To DO LIST';
+const SORT_ORDER = {
+  ASCENDING_BY_DATE: '이전 날짜순',
+  DESCENDING_BY_DATE: '최근 날짜순',
+};
+const MESSAGE = {
+  NO_TODO_LIST: '입력한 투두 아이템이 없습니다',
+};
+
+const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
   const {
     state: { taskList: allTasks },
     dispatch,
   } = useTaskContext();
   const [isAscending, setIsAscending] = useState<boolean>(false);
-  // const [allTasks, setAllTasks] = useState<ITask[]>(taskList);
 
   const handleToggleSort = () => {
     const AllTasksForSort = allTasks;
@@ -47,18 +39,8 @@ const TodoSection: React.FC<IProp> = ({ open }) => {
         return new Date(a.taskDueDate) > new Date(b.taskDueDate) ? 1 : -1;
       });
     }
-    setTaskItem([...AllTasksForSort]);
+    dispatch(setTaskItem([...AllTasksForSort]));
     setIsAscending(!isAscending);
-  };
-
-  const handleRemoveTodoList = (date: string): void => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      const allTasksAfterRemoval = allTasks.filter(
-        (task) => task.taskDueDate !== date,
-      );
-      setTaskItem(allTasksAfterRemoval);
-      todoStorage.save(allTasksAfterRemoval);
-    }
   };
 
   return (
@@ -71,17 +53,17 @@ const TodoSection: React.FC<IProp> = ({ open }) => {
           margin: '26px 0 54px',
         }}
       >
-        <TodoListTitle>To Do List</TodoListTitle>
+        <TodoListTitle>{SECTION_TITLE}</TodoListTitle>
         <ToggleOrderByDateBtn onClick={handleToggleSort}>
           {isAscending ? (
             <>
               <ArrowDownIcon className="arrow_up" />
-              <span>이전 날짜순</span>
+              <span>{SORT_ORDER.ASCENDING_BY_DATE}</span>
             </>
           ) : (
             <>
               <ArrowDownIcon />
-              <span>최근 날짜순</span>
+              <span>{SORT_ORDER.DESCENDING_BY_DATE}</span>
             </>
           )}
         </ToggleOrderByDateBtn>
@@ -95,7 +77,7 @@ const TodoSection: React.FC<IProp> = ({ open }) => {
         </StyledTodoList>
       ) : (
         <EmptyTodoList>
-          <p>입력한 투두 아이템이 없습니다</p>
+          <p>{MESSAGE.NO_TODO_LIST}</p>
         </EmptyTodoList>
       )}
     </>
@@ -129,10 +111,7 @@ const ToggleOrderByDateBtn = styled.button`
 `;
 
 const StyledTodoList = styled.div`
-  /* display: flex;
-  flex-flow: row wrap; */
   display: grid;
-  /* grid-template-columns: repeat(5, 1fr); */
   grid-template-columns: repeat(auto-fill, minmax(240px, auto));
   justify-items: center;
 `;

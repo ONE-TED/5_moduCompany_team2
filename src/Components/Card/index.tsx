@@ -10,7 +10,7 @@ import greenBullet from 'Assets/images/green-bullet.png';
 import redBullet from 'Assets/images/red-bullet.png';
 import blueBullet from 'Assets/images/blue-bullet.png';
 
-interface CardProps {
+interface ICardProps {
   item: ITask;
   open: () => void;
 }
@@ -49,7 +49,7 @@ const CIRCLE_MEASUREMENT = {
   RADIUS: 69,
 };
 
-const Card: React.FC<CardProps> = ({ item, open }) => {
+const Card: React.FC<ICardProps> = ({ item, open }) => {
   const { state, dispatch } = useTaskContext();
   const { selectedTask } = state;
   const { todos: todoItems, taskDueDate } = item;
@@ -87,8 +87,7 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
     showProgress(percent);
   }, [todoItems]);
 
-  const selectCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(item.taskDueDate);
+  const selectCard = (): void => {
     open();
     dispatch(setSelectedTask(item));
   };
