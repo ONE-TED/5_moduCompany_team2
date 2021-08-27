@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { TodoAction } from 'Store/actions/todoActions';
+// import { TodoAction } from 'Store/actions/todoActions';
 import { TaskAction } from 'Store/actions/taskActions';
 
 export interface ITodo {
@@ -16,20 +16,12 @@ export interface ITask {
   todos: ITodo[];
 }
 
-export type TaskListState = {
-  taskList: ITask[];
-};
-
 export type TaskState = {
+  taskList: ITask[];
   selectedTask: ITask | null;
 };
 
-export type TodoContextType = {
-  state: TaskState;
-  dispatch: Dispatch<TodoAction>;
-};
-
 export type TaskContextType = {
-  state: TaskListState;
+  state: TaskState;
   dispatch: Dispatch<TaskAction>;
 };

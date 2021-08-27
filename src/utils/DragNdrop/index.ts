@@ -1,12 +1,5 @@
-interface TodoTypes {
-  id: number;
-  taskName: string;
-  stateId: number;
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
-}
+import { ITodo } from 'Store/types';
 
-export const getElementIndex = (todoData: TodoTypes[], id: number): number => {
+export const getElementIndex = (todoData: ITodo[], id: number): number => {
   return todoData.findIndex((todo) => todo.id === id);
 };

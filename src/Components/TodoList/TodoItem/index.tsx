@@ -4,17 +4,23 @@ import styled from 'styled-components';
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 import Button from 'Components/Button';
-import { ITodoTypes } from 'Components/TodoList';
+import { ITodo, ITask } from 'Store/types';
+import {
+  deleteTodoItem,
+  setTaskItem,
+  setTodoItemState,
+} from 'Store/actions/taskActions';
+import useTaskContext from 'Hooks/useTaskContext';
 
 interface IProps {
-  todo: ITodoTypes;
+  todo: ITodo;
   checkedId: number[];
   handleCheckedId(stateId: number): void;
   setDragItemId: {
     grabItem: (id: number) => void;
     interSectItem: (id: number) => void;
   };
-  switchStateData: () => void;
+  switchData: () => void;
   clickElId: { current: number | null };
   interSectElId: { current: number | null };
   lastLeaveTarget: { current: HTMLDivElement | null };
@@ -48,15 +54,62 @@ const TodoItem: React.FC<IProps> = ({
   checkedId,
   handleCheckedId,
   setDragItemId,
-  switchStateData,
+  switchData,
   interSectElId,
   clickElId,
   lastLeaveTarget,
 }) => {
+  const { state, dispatch } = useTaskContext();
+
+  // const selected
   const handleDelete = (): void => {
-    console.log(todo.id, '지워질 아이디');
+    if (state.selectedTask) {
+      const selectedDate = state.selectedTask.taskDueDate;
+      const findIndex = state.taskList.findIndex(
+        (item) => item.taskDueDate === selectedDate,
+      );
+      const taskDueDate = state.selectedTask!.taskDueDate;
+      const newTodos = state.selectedTask!.todos.filter(
+        (item) => item.id !== todo.id,
+      );
+      const newTaskList: ITask[] = [...state.taskList];
+      newTaskList[findIndex] = {
+        taskDueDate: taskDueDate,
+        todos: newTodos,
+      };
+      dispatch(setTaskItem(newTaskList));
+      dispatch(deleteTodoItem(todo.id));
+    }
   };
+
   const updateState = (): void => {
+    if (state.selectedTask) {
+      const selectedDate = state.selectedTask.taskDueDate;
+      const findIndex = state.taskList.findIndex(
+        (item) => item.taskDueDate === selectedDate,
+      );
+      const taskDueDate = state.selectedTask!.taskDueDate;
+      const newTaskList: ITask[] = [...state.taskList]; // taskList: todos:[전체]
+      newTaskList[findIndex] = {
+        taskDueDate: taskDueDate,
+        todos: state.selectedTask!.todos,
+      };
+      // const itemIndex = newTaskList[findIndex].todos.findIndex(
+      //   (item) => item.id === todo.id,
+      // );
+      // const newTodos = [...newTaskList[findIndex].todos];
+      // const newTodo = newTodos[itemIndex];
+      // newTodo.stateId = ((newTodo.stateId + 1) % 3) as 0 | 1 | 2;
+
+      // const newData: ITask[] = [...state.taskList];
+      // newData[findIndex] = {
+      //   taskDueDate: taskDueDate,
+      //   todos: newTodos,
+      // };
+
+      dispatch(setTaskItem(newTaskList));
+      dispatch(setTodoItemState(todo.id, todo.stateId)); // todos:[1212]
+    }
     console.log(todo.id, todo.stateId);
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
@@ -88,7 +141,7 @@ const TodoItem: React.FC<IProps> = ({
       lastLeaveTarget.current!.classList.remove('move_up');
       lastLeaveTarget.current!.classList.remove('move_down');
     }
-    switchStateData();
+    switchData();
   };
   const onDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -109,8 +162,8 @@ const TodoItem: React.FC<IProps> = ({
       onDragLeave={onDragLeave}
     >
       <LSide>
-        <CheckIconWrapper onClick={() => handleCheckedId(todo.stateId)}>
-          {checkedId.includes(todo.stateId) && <CheckIcon />}
+        <CheckIconWrapper onClick={() => handleCheckedId(todo.id)}>
+          {checkedId.includes(todo.id) && <CheckIcon />}
         </CheckIconWrapper>
         <Text>{todo.taskName}</Text>
       </LSide>
@@ -174,7 +227,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 56px;
+  height: 68px;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
   border-bottom: 1px solid ${({ theme }) => theme.colors.darkLine};
@@ -188,12 +241,12 @@ const Container = styled.div`
   &.grap {
     background-color: ${({ theme }) => theme.colors.darkLine};
   }
-  transition: 0.6s;
+  transition: 0.4s;
   &.move_up {
-    margin-bottom: 14px;
+    margin-bottom: 18px;
   }
   &.move_down {
-    margin-top: 14px;
+    margin-top: 18px;
   }
 `;
 const StatusButton = styled(Button)`

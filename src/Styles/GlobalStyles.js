@@ -17,6 +17,7 @@ export const GlobalStyles = createGlobalStyle`
       outline: none;
     }
     button {
+      font-family: 'Barlow', sans-serif;
       cursor: pointer;
     }
     ol,

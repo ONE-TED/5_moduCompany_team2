@@ -2,31 +2,27 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Card from 'Components/Card';
-
 import { todoStorage } from 'utils/storage';
-
+import useTaskContext from 'Hooks/useTaskContext';
+import { ITodo, ITask } from 'Store/types';
+import { setSelectedTask } from 'Store/actions/taskActions';
+import { setTaskItem } from 'Store/actions/taskActions';
 import { ReactComponent as ArrowDownIcon } from 'Assets/icon/ic_arrow-down.svg';
 
-interface ITodo {
-  id: number;
-  taskName: string;
-  stateId: 0 | 1 | 2;
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
+interface ITodoSectionProps {
+  open: () => void;
 }
 
-interface ITask {
-  taskDueDate: string;
-  todos: ITodo[];
-}
-
-const TodoSection: React.FC = () => {
+const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
+  const {
+    state: { taskList: allTasks },
+    dispatch,
+  } = useTaskContext();
   const [isAscending, setIsAscending] = useState<boolean>(false);
-  const [allTasks, setAllTasks] = useState<ITask[]>(todoStorage.load() ?? []);
+  // const [allTasks, setAllTasks] = useState<ITask[]>(taskList);
 
   const handleToggleSort = () => {
-    const AllTasksForSort = JSON.parse(JSON.stringify(allTasks));
+    const AllTasksForSort = allTasks;
 
     if (isAscending) {
       AllTasksForSort.sort((a: ITask, b: ITask) => {
@@ -37,22 +33,19 @@ const TodoSection: React.FC = () => {
         return new Date(a.taskDueDate) > new Date(b.taskDueDate) ? 1 : -1;
       });
     }
-    setAllTasks(AllTasksForSort);
-    todoStorage.save(AllTasksForSort);
-
+    setTaskItem([...AllTasksForSort]);
     setIsAscending(!isAscending);
   };
 
-  const handleRemoveTodoList = (date: string): void => {
-    if (confirm('정말로 삭제하시겠습니까?')) {
-      const allTasksAfterRemoval = allTasks.filter(
-        (task) => task.taskDueDate !== date,
-      );
-
-      setAllTasks(allTasksAfterRemoval);
-      todoStorage.save(allTasksAfterRemoval);
-    }
-  };
+  // const handleRemoveTodoList = (date: string): void => {
+  //   if (confirm('정말로 삭제하시겠습니까?')) {
+  //     const allTasksAfterRemoval = allTasks.filter(
+  //       (task) => task.taskDueDate !== date,
+  //     );
+  //     setTaskItem(allTasksAfterRemoval);
+  //     todoStorage.save(allTasksAfterRemoval);
+  //   }
+  // };
 
   return (
     <>
@@ -83,11 +76,7 @@ const TodoSection: React.FC = () => {
       {allTasks.length > 0 ? (
         <StyledTodoList>
           {allTasks.map((item: ITask) => (
-            <Card
-              key={item.taskDueDate}
-              todoItems={item.todos}
-              handleRemoveTodoList={handleRemoveTodoList}
-            />
+            <Card open={open} key={item.taskDueDate} item={item} />
           ))}
         </StyledTodoList>
       ) : (
@@ -101,7 +90,7 @@ const TodoSection: React.FC = () => {
 
 export default TodoSection;
 
-const TodoListTitle = styled.h1`
+const TodoListTitle = styled.h2`
   color: ${({ theme }) => theme.colors.white};
   font-size: 28px;
   line-height: 140%;

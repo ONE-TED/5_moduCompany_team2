@@ -1,22 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
+import { ITask } from 'Store/types';
+import useTaskContext from 'Hooks/useTaskContext';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
+import { deleteTaskItem } from 'Store/actions/taskActions';
+import { setSelectedTask } from 'Store/actions/taskActions';
 import greenBullet from 'Assets/images/green-bullet.png';
 import redBullet from 'Assets/images/red-bullet.png';
 import blueBullet from 'Assets/images/blue-bullet.png';
-interface TodoTypes {
-  id: number;
-  taskName: string;
-  stateId: number;
-  createdAt: string;
-  updatedAt: string;
-  dueDate: string;
-}
 
 interface CardProps {
-  todoItems: TodoTypes[];
-  handleRemoveTodoList: (date: string) => void;
+  item: ITask;
+  open: () => void;
 }
 
 interface Map {
@@ -53,7 +49,10 @@ const CIRCLE_MEASUREMENT = {
   RADIUS: 69,
 };
 
-const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
+const Card: React.FC<CardProps> = ({ item, open }) => {
+  const { state, dispatch } = useTaskContext();
+  const { selectedTask } = state;
+  const { todos: todoItems, taskDueDate } = item;
   const { STROKEWIDTH, RADIUS } = CIRCLE_MEASUREMENT;
   const CIRCUMFERENCE = 2 * Math.PI * (RADIUS - STROKEWIDTH / 2);
 
@@ -66,31 +65,47 @@ const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
     });
   countTodosByStatus.reverse();
 
-  // console.log(countTodosByStatus);
+  const percent = isNaN((countTodosByStatus[0] / todoItems.length) * 100)
+    ? 0
+    : (countTodosByStatus[0] / todoItems.length) * 100;
 
-  const percent = (countTodosByStatus[0] / todoItems.length) * 100;
-
-  const dateObject: Date = new Date(todoItems[0].dueDate);
+  const dateObject: Date = new Date(taskDueDate);
   const month: number = dateObject.getMonth() + 1;
   const date: number = dateObject.getDate();
   const day: string = dateObject.getDay().toString();
+  function showProgress(per: number): void {
+    const progress = per / 100;
+    const dashoffset = CIRCUMFERENCE * (1 - progress);
 
-  useEffect(() => {
-    function showProgress(per: number): void {
-      const progress = per / 100;
-      const dashoffset = CIRCUMFERENCE * (1 - progress);
-
-      if (barRef && barRef.current) {
-        barRef.current.style.strokeDashoffset = dashoffset.toString();
-        barRef.current.style.strokeDasharray = CIRCUMFERENCE.toString();
-      }
+    if (barRef && barRef.current) {
+      barRef.current.style.strokeDashoffset = dashoffset.toString();
+      barRef.current.style.strokeDasharray = CIRCUMFERENCE.toString();
     }
-
+  }
+  useEffect(() => {
     showProgress(percent);
-  }, [todoItems]);
+  }, [todoItems, percent]);
+
+  const selectCard = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log(item.taskDueDate);
+    open();
+    dispatch(setSelectedTask(item));
+  };
+
+  const handleRemoveTodoList = (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ): void => {
+    e.stopPropagation();
+    dispatch(deleteTaskItem(taskDueDate));
+  };
 
   return (
-    <CardWrapper>
+    <CardWrapper
+      onClick={selectCard}
+      role="button"
+      aria-haspopup="true"
+      aria-selected={taskDueDate === selectedTask?.taskDueDate}
+    >
       <CircleProgressWrapper>
         <svg
           width={RADIUS * 2}
@@ -117,9 +132,7 @@ const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
         </ContentInCircle>
       </CircleProgressWrapper>
       <CardBox>
-        <DeleteButton
-          onClick={() => handleRemoveTodoList(todoItems[0].dueDate)}
-        >
+        <DeleteButton onClick={handleRemoveTodoList}>
           <DeleteIcon />
         </DeleteButton>
         <SummaryOfTodos>
@@ -136,15 +149,6 @@ const Card: React.FC<CardProps> = ({ todoItems, handleRemoveTodoList }) => {
 
 export default React.memo(Card);
 
-const CardWrapper = styled.div.attrs(() => ({
-  tabIndex: '0',
-}))`
-  position: relative;
-  cursor: pointer;
-  /* margin: 100px 51px; */
-  margin-bottom: 200px;
-`;
-
 const CardBox = styled.div`
   position: absolute;
   top: 69px;
@@ -154,13 +158,45 @@ const CardBox = styled.div`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.strongDarkBg};
+`;
 
-  ${CardWrapper}:hover & {
-    background: ${({ theme }) => theme.colors.strongDarkBgHover};
+const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
+  cx,
+  cy,
+  r,
+  strokeWidth,
+}))`
+  fill: ${({ theme }) => theme.colors.strongDarkBg};
+  stroke: #e6e6e6;
+`;
+
+const CardWrapper = styled.div`
+  position: relative;
+  cursor: pointer;
+  margin-bottom: 200px;
+
+  &:hover {
+    ${CardBox} {
+      background: ${({ theme }) => theme.colors.strongDarkBgHover};
+    }
+
+    ${FrameCircle} {
+      fill: ${({ theme }) => theme.colors.strongDarkBgHover};
+    }
   }
 
-  ${CardWrapper}:focus & {
-    background: ${({ theme }) => theme.colors.strongDarkBgHover};
+  ${CardBox} {
+    background: ${(props) =>
+      props['aria-selected']
+        ? props.theme.colors.strongDarkBgHover
+        : props.theme.colors.strongDarkBg};
+  }
+
+  ${FrameCircle} {
+    fill: ${(props) =>
+      props['aria-selected']
+        ? props.theme.colors.strongDarkBgHover
+        : props.theme.colors.strongDarkBg};
   }
 `;
 
@@ -241,22 +277,4 @@ const BarCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
   fill: none;
   stroke: ${({ theme }) => theme.colors.green};
   stroke-linecap: round;
-`;
-
-const FrameCircle = styled.circle.attrs(({ cx, cy, r, strokeWidth }) => ({
-  cx,
-  cy,
-  r,
-  strokeWidth,
-}))`
-  fill: ${({ theme }) => theme.colors.strongDarkBg};
-  stroke: #e6e6e6;
-
-  ${CardWrapper}:hover & {
-    fill: ${({ theme }) => theme.colors.strongDarkBgHover};
-  }
-
-  ${CardWrapper}:focus & {
-    fill: ${({ theme }) => theme.colors.strongDarkBgHover};
-  }
 `;
