@@ -5,6 +5,7 @@ import TodoFilter from 'Components/TodoFilter';
 import { useTodoFilter } from 'Components/TodoFilter/useTodoFilter';
 import TodoList from 'Components/TodoList';
 import useTaskContext from 'Hooks/useTaskContext';
+import { setSelectedTask } from 'Store/actions/taskActions';
 
 interface IProps {
   isClosing: boolean;
@@ -51,6 +52,8 @@ const TodoModal: React.FC<IProps> = ({ isClosing, close }) => {
 
   const handleClose = () => {
     if (isClosing) {
+      dispatch(setSelectedTask({ taskDueDate: '', todos: [] }));
+      setVisible(false);
       close();
     }
   };
@@ -77,7 +80,7 @@ const Container = styled.div<{ visible: boolean; isClosing: boolean }>`
   left: 100%;
   top: 0;
   width: 30%;
-  min-width: 409px;
+  min-width: 300px;
   height: calc(100% - 100px);
   margin-top: 100px;
   background-color: ${({ theme }) => theme.colors.strongDarkBg};
