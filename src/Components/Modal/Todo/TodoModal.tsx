@@ -1,9 +1,8 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import TodoFilter from 'Components/TodoFilter';
-import { useTodoFilter } from 'Components/TodoFilter/useTodoFilter';
-import TodoList from 'Components/TodoList';
+import TodoFilter from 'Components/TodoTemplate/TodoFilter';
+import { useTodoFilter } from 'Components/TodoTemplate/TodoFilter/useTodoFilter';
+import TodoList from 'Components/TodoTemplate/TodoList';
 import useTaskContext from 'Hooks/useTaskContext';
 import { setSelectedTask } from 'Store/actions/taskActions';
 

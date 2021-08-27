@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ConfirmModal from 'Components/ConfirmModal';
+import ConfirmModal from 'Components/Modal/Comfirm/ConfirmModal';
 import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 
 interface IDeleteButton {

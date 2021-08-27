@@ -1,6 +1,6 @@
 import * as types from 'Store/actions/actionTypes';
 
-import { ITask, ITodo } from 'Store/types';
+import { ITask, ITodo } from 'utils/Types';
 
 export const setTaskItem = (payload: ITask[]) => {
   // const assertion - type 속성을 타입추론 시 활용할 수 있게 하기 위함

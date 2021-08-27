@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import Button from 'Components/Button';
+import Button from 'Components/Commons/Button';
 
 interface IFilterButtonProps {
   toggleClick: boolean;

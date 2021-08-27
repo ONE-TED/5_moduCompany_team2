@@ -1,5 +1,5 @@
 import * as types from 'Store/actions/actionTypes';
-import { TaskState } from 'Store/types';
+import { TaskState } from 'utils/Types';
 import { TaskAction } from 'Store/actions/taskActions';
 
 const taskReducer = (state: TaskState, action: TaskAction): TaskState => {

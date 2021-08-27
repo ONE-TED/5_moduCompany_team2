@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ITodo } from 'Store/types';
+import { ITodo } from 'utils/Types';
 
 export interface IFilterItem {
   readonly filterName: string;

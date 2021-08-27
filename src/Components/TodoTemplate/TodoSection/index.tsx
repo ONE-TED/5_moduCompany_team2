@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Card from 'Components/Card';
 import useTaskContext from 'Hooks/useTaskContext';
-import { ITask } from 'Store/types';
+import { ITask } from 'utils/Types';
 import { setTaskItem } from 'Store/actions/taskActions';
 import { ReactComponent as ArrowDownIcon } from 'Assets/icon/ic_arrow-down.svg';
 
@@ -14,10 +14,8 @@ interface ITodoSectionProps {
 const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
   const {
     state: { taskList: allTasks },
-    dispatch,
   } = useTaskContext();
   const [isAscending, setIsAscending] = useState<boolean>(false);
-  // const [allTasks, setAllTasks] = useState<ITask[]>(taskList);
 
   const handleToggleSort = () => {
     const AllTasksForSort = allTasks;
@@ -34,16 +32,6 @@ const TodoSection: React.FC<ITodoSectionProps> = ({ open }) => {
     setTaskItem([...AllTasksForSort]);
     setIsAscending(!isAscending);
   };
-
-  // const handleRemoveTodoList = (date: string): void => {
-  //   if (confirm('정말로 삭제하시겠습니까?')) {
-  //     const allTasksAfterRemoval = allTasks.filter(
-  //       (task) => task.taskDueDate !== date,
-  //     );
-  //     setTaskItem(allTasksAfterRemoval);
-  //     todoStorage.save(allTasksAfterRemoval);
-  //   }
-  // };
 
   return (
     <>

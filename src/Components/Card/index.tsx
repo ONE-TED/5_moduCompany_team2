@@ -1,53 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { ITask } from 'Store/types';
+import { ITask } from 'utils/Types';
 import useTaskContext from 'Hooks/useTaskContext';
 import { deleteTaskItem } from 'Store/actions/taskActions';
 import { setSelectedTask } from 'Store/actions/taskActions';
 import greenBullet from 'Assets/images/green-bullet.png';
 import redBullet from 'Assets/images/red-bullet.png';
 import blueBullet from 'Assets/images/blue-bullet.png';
-import DeleteButton from 'Components/DeleteButton';
+import DeleteButton from 'Components/Commons/DeleteButton';
+import { STATUS, DAYS, CIRCLE_MEASUREMENT } from 'utils/Constants';
 
 interface CardProps {
   item: ITask;
   open: () => void;
 }
-
-interface Map {
-  [key: string]: string;
-}
-
-const status = [
-  {
-    id: 0,
-    state: '시작안함',
-  },
-  {
-    id: 1,
-    state: '진행중',
-  },
-  {
-    id: 2,
-    state: '완료',
-  },
-];
-
-const DAYS: Map = {
-  0: 'SUN',
-  1: 'MON',
-  2: 'TUE',
-  3: 'WED',
-  4: 'THU',
-  5: 'FRI',
-  6: 'SAT',
-};
-
-const CIRCLE_MEASUREMENT = {
-  STROKEWIDTH: 12,
-  RADIUS: 69,
-};
 
 const Card: React.FC<CardProps> = ({ item, open }) => {
   const { state, dispatch } = useTaskContext();
@@ -140,8 +107,8 @@ const Card: React.FC<CardProps> = ({ item, open }) => {
         <StyledDeleteButton onClick={handleRemoveTodoList} confirm />
         <SummaryOfTodos>
           {countTodosByStatus.map((count, i) => (
-            <li key={status[status.length - 1 - i].state}>{`${
-              status[status.length - 1 - i].state
+            <li key={STATUS[STATUS.length - 1 - i].state}>{`${
+              STATUS[STATUS.length - 1 - i].state
             } : ${count}`}</li>
           ))}
         </SummaryOfTodos>

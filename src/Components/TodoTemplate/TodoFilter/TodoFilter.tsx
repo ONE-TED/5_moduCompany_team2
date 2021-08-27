@@ -1,7 +1,7 @@
 import React from 'react';
 import { IFilterItem } from './useTodoFilter';
 import style from 'styled-components';
-import FilterButton from 'Components/TodoFilter/FilterButton';
+import FilterButton from 'Components/TodoTemplate/TodoFilter/FilterButton';
 
 interface IFilterProps {
   filterList: IFilterItem[];

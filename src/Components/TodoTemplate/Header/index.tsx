@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as LogoIcon } from 'Assets/icon/ic_logo.svg';
-import { getCurrentDateString } from 'utils/date';
-import TodoCreator from 'Components/TodoCreator';
+import { getCurrentDateString } from 'utils/Date';
+import TodoCreator from 'Components/TodoTemplate/Header/TodoCreator';
 
 const Header: React.FC = () => {
   return (

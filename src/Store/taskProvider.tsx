@@ -4,7 +4,6 @@ import { TaskState } from 'Store/types';
 import taskReducer from 'Store/reducers/taskReducers';
 import { TaskContextType } from 'Store/types';
 import { todoStorage } from 'utils/storage';
-import { setTaskItem } from 'Store/actions/taskActions';
 
 const initialState: TaskState = {
   taskList: todoStorage.load() || [],

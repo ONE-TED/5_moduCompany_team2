@@ -21,7 +21,7 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
   cb,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [modalOpener, setModalOpener] = useState<any>(null); // TODO
+  const [modalOpener, setModalOpener] = useState<Element | null>(null);
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const handleOpen = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,7 +33,7 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
-    modalOpener && modalOpener.focus();
+    modalOpener && (modalOpener as HTMLElement).focus();
   }, [modalOpener]);
 
   const handleDimClose = (e: React.MouseEvent) => {

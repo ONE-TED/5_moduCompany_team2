@@ -4,15 +4,15 @@ import DatePicker from 'react-datepicker';
 
 import { ReactComponent as PlusIcon } from 'Assets/icon/ic_plus.svg';
 import { todoStorage } from 'utils/storage';
-import { getDayMonthYear } from 'utils/date';
+import { getDayMonthYear } from 'utils/Date';
 import { setSelectedTask, setTaskItem } from 'Store/actions/taskActions';
 import { ITodo, ITask } from 'Store/types';
 import useToast from 'Hooks/useToast';
 import useTaskContext from 'Hooks/useTaskContext';
-import Toast from 'Components/Toast';
-import Input from 'Components/Input';
-import Button from 'Components/Button';
-import CustomDatePicker from 'Components/CustomDatePicker';
+import Toast from 'Components/Commons/Toast';
+import Input from 'Components/TodoTemplate/Header/Input';
+import Button from 'Components/Commons/Button';
+import CustomDatePicker from 'Components/TodoTemplate/Header/CustomDatePicker';
 
 const TodoCreator: React.FC = () => {
   const { state, dispatch } = useTaskContext();
@@ -21,7 +21,7 @@ const TodoCreator: React.FC = () => {
   const { isShow, message, toast } = useToast();
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const datePickerRef = useRef<any>(null); // type 모르겠음
+  const datePickerRef = useRef<any>(null);
   const handleDateChange = useCallback((date: Date): void => {
     setTargetDate(date);
   }, []);
@@ -34,7 +34,6 @@ const TodoCreator: React.FC = () => {
   );
 
   const handleClick = useCallback(() => {
-    //TODO Refactoring
     if (!todoText) {
       toast('할일을 입력해주세요.');
       inputRef.current?.focus();
@@ -46,6 +45,8 @@ const TodoCreator: React.FC = () => {
       datePickerRef.current?.setFocus();
       return;
     }
+    console.log(typeof datePickerRef.current);
+    console.log('datepicker', datePickerRef.current);
 
     const dueDate: string = getDayMonthYear(targetDate);
     const todo: ITodo = {
@@ -59,7 +60,7 @@ const TodoCreator: React.FC = () => {
     const task = todoStorage.load();
     const findTaskItem = task.find(
       (item: ITask) => item.taskDueDate === dueDate,
-    ); //TODO
+    );
     const newTaskItem = findTaskItem
       ? findTaskItem
       : { taskDueDate: dueDate, todos: [] };

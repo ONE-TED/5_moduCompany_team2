@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { getElementIndex } from 'utils/DragNdrop';
 import useTaskContext from 'Hooks/useTaskContext';
 import { setTaskItem, setTodos } from 'Store/actions/taskActions';
-import TodoItem from 'Components/TodoList/TodoItem';
-import { ITodo } from 'Store/types';
+import TodoItem from 'Components/TodoTemplate/TodoList/TodoItem';
+import { ITodo } from 'utils/Types';
 import { useEffect } from 'react';
-import ConfirmModal from 'Components/ConfirmModal';
+import ConfirmModal from 'Components/Modal/Comfirm/ConfirmModal';
 
 interface IProps {
   filterTodos: ITodo[];

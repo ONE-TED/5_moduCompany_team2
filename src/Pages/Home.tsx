@@ -1,10 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import TodoTemplate from 'Components/TodoTemplate';
-import TodoSection from 'Components/TodoSection';
+import TodoSection from 'Components/TodoTemplate/TodoSection';
 import useModal from 'Components/Modal/useModal';
-import TodoModal from 'Components/Modal/TodoModal';
+import TodoModal from 'Components/Modal/Todo/TodoModal';
 
 const Home: React.FC = () => {
   const { open, close, modalRender, isClosing, visible } = useModal();

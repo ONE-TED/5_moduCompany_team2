@@ -2,15 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as CheckIcon } from 'Assets/icon/ic_check.svg';
-import Button from 'Components/Button';
-import { ITodo, ITask } from 'Store/types';
+import Button from 'Components/Commons/Button';
+import { ITodo, ITask } from 'utils/Types';
 import {
   deleteTodoItem,
   setTaskItem,
   setTodoItemState,
 } from 'Store/actions/taskActions';
 import useTaskContext from 'Hooks/useTaskContext';
-import DeleteButton from 'Components/DeleteButton';
+import DeleteButton from 'Components/Commons/DeleteButton';
+import { STATUS, STATUS_CLASS_NAME } from 'utils/Constants';
 
 interface IProps {
   todo: ITodo;
@@ -25,30 +26,7 @@ interface IProps {
   interSectElId: { current: number | null };
   lastLeaveTarget: { current: HTMLDivElement | null };
 }
-interface IObjectIndex {
-  [key: number]: string;
-}
 
-const STATUS = [
-  {
-    id: 0,
-    state: '시작안함',
-  },
-  {
-    id: 1,
-    state: '진행중',
-  },
-  {
-    id: 2,
-    state: '완료',
-  },
-];
-
-const STATUS_CLASS_NAME: IObjectIndex = {
-  0: 'todo',
-  1: 'in-progress',
-  2: 'done',
-};
 const TodoItem: React.FC<IProps> = ({
   todo,
   checkedId,
@@ -61,7 +39,6 @@ const TodoItem: React.FC<IProps> = ({
 }) => {
   const { state, dispatch } = useTaskContext();
 
-  // const selected
   const handleDelete = (): void => {
     if (state.selectedTask) {
       const selectedDate = state.selectedTask.taskDueDate;
