@@ -114,7 +114,7 @@ const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
 export default TodoList;
 
 const Wrapper = styled.div<{ todoCounts: number }>`
-  max-height: 500px;
+  max-height: 450px;
   overflow-x: hidden;
   overflow-y: ${(props) => (props.todoCounts === 0 ? 'none' : 'scroll')};
   &::-webkit-scrollbar {
