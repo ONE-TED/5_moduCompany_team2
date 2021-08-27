@@ -27,6 +27,7 @@ const StyledFilterButton = styled(Button)<IFilterButtonProps>`
   min-width: 34px;
   font-weight: bold;
   margin-left: 8px;
+  margin-bottom: 3px;
   ${({ toggleClick, theme }) =>
     toggleClick
       ? css`

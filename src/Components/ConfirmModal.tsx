@@ -11,7 +11,7 @@ interface IConfirmModal {
   message: string;
   className?: string;
   trigger: React.FC<ITriggerProps>;
-  cb: () => void;
+  cb: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ConfirmModal: React.FC<IConfirmModal> = ({
@@ -25,7 +25,7 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const handleOpen = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+    e.stopPropagation();
     setModalOpener(document.activeElement);
     setIsOpen(true);
     setTimeout(() => modalRef.current?.focus());
@@ -37,11 +37,13 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
   }, [modalOpener]);
 
   const handleDimClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
     e.target === e.currentTarget && handleClose();
   };
 
-  const handleConfirm = () => {
-    cb();
+  const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    cb(e);
     handleClose();
   };
 
@@ -101,7 +103,7 @@ const ConfirmModal: React.FC<IConfirmModal> = ({
                 <ConfirmButton type="button" onClick={handleConfirm}>
                   확인
                 </ConfirmButton>
-                <CancelButton type="button" onClick={handleConfirm}>
+                <CancelButton type="button" onClick={handleClose}>
                   취소
                 </CancelButton>
               </Content>

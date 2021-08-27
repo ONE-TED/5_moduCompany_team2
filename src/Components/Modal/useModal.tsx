@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'Components/Modal';
 
 import styled from 'styled-components';
@@ -6,13 +6,18 @@ import styled from 'styled-components';
 const useModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const open = () => {
-    setIsClosing(false);
     setIsOpen(true);
+    setTimeout(() => {
+      setVisible(true);
+    }, 0);
   };
   const close = () => {
+    setIsClosing(false);
     setIsOpen(false);
+    setVisible(false);
   };
 
   const willClose = () => {
@@ -37,6 +42,7 @@ const useModal = () => {
     modalRender,
     isClosing,
     willClose,
+    visible,
   };
 };
 

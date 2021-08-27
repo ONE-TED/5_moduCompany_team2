@@ -6,10 +6,15 @@ import { ReactComponent as DeleteIcon } from 'Assets/icon/ic_delete.svg';
 
 interface IDeleteButton {
   className?: string;
-  cb: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  confirm?: boolean;
 }
 
-const DeleteButton: React.FC<IDeleteButton> = ({ className, cb }) => {
+const DeleteButton: React.FC<IDeleteButton> = ({
+  className,
+  onClick,
+  confirm = false,
+}) => {
   return (
     <ConfirmModal
       message="정말 삭제하시겠습니까?"
@@ -20,12 +25,12 @@ const DeleteButton: React.FC<IDeleteButton> = ({ className, cb }) => {
           aria-haspopup="true"
           aria-pressed={isOpen}
           aria-label="삭제 버튼"
-          onClick={handleOpen}
+          onClick={confirm ? handleOpen : onClick}
         >
           <StyledDeleteIcon />
         </Wrapper>
       )}
-      cb={() => console.log('삭제')}
+      cb={onClick}
     />
   );
 };

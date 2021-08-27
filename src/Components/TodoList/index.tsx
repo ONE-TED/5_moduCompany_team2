@@ -5,8 +5,9 @@ import { getElementIndex } from 'utils/DragNdrop';
 import useTaskContext from 'Hooks/useTaskContext';
 import { setTaskItem, setTodos } from 'Store/actions/taskActions';
 import TodoItem from 'Components/TodoList/TodoItem';
-import { ITodo, ITask } from 'Store/types';
+import { ITodo } from 'Store/types';
 import { useEffect } from 'react';
+import ConfirmModal from 'Components/ConfirmModal';
 
 interface IProps {
   filterTodos: ITodo[];
@@ -14,7 +15,7 @@ interface IProps {
 
 const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
   const { state, dispatch } = useTaskContext();
-  const [checkedId, setCheckedId] = useState<number[]>([]); // 체크된 id 배열입니다 [1523,5342,2342]
+  const [checkedId, setCheckedId] = useState<number[]>([]);
   const handleCheckedId = (id: number): void => {
     if (!checkedId.includes(id)) {
       setCheckedId([...checkedId, id]);
@@ -25,7 +26,7 @@ const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
   useEffect(() => {
     setCheckedId([]);
   }, [data]);
-  //drag n drop
+
   const interSectElId = useRef<number>(-1);
   const clickElId = useRef<number>(-1);
   const lastLeaveTarget = useRef<HTMLDivElement | null>(null);
@@ -40,14 +41,13 @@ const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
   const sortStateData = (): ITodo[] => {
     const updateData = [...data];
     const clickedItemData = updateData[clickElId.current];
-    updateData.splice(clickElId.current, 1); //자르고
+    updateData.splice(clickElId.current, 1);
     updateData.splice(interSectElId.current, 0, clickedItemData);
     return updateData;
   };
   const switchData = (): void => {
     dispatch(setTodos(sortStateData()));
   };
-  //drag n drop
 
   const todoItemAllSelect = () => {
     if (checkedId.length > 0) {
@@ -76,7 +76,19 @@ const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
         <button onClick={todoItemAllSelect}>
           {checkedId.length > 0 ? `선택 해제` : '전체선택'}
         </button>
-        <button onClick={todoItemAllDelete}>{checkedId.length} 개 삭제</button>
+        <ConfirmModal
+          message="정말 삭제하시겠습니까?"
+          trigger={({ handleOpen }) => (
+            <button
+              type="button"
+              disabled={checkedId.length === 0}
+              onClick={handleOpen}
+            >
+              {checkedId.length} 개 삭제
+            </button>
+          )}
+          cb={todoItemAllDelete}
+        />
       </ItemsDelete>
       {data &&
         data.map((todo) => (
@@ -131,7 +143,8 @@ const ItemsDelete = styled.div`
 `;
 
 const NonTodoItemsNoti = styled.div`
-  /* color: white; */
-  margin: 0 10px 0 10px;
+  margin: 39px 10px 0 10px;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.primary};
+  text-align: center;
 `;
