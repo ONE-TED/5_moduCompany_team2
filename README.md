@@ -14,6 +14,7 @@
 > ❕To-Do List App 만들기❗
 
 ![onted](https://user-images.githubusercontent.com/52653720/131139681-d9701b39-368a-4610-9afd-a6e705c80bd2.JPG)
+![시연](https://user-images.githubusercontent.com/55486644/131142351-b4cda206-d302-4e2c-8774-f947296802c1.gif)
 
 <br/>
 
