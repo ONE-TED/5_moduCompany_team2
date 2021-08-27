@@ -24,7 +24,7 @@ interface IProps {
   switchData: () => void;
   clickElId: { current: number | null };
   interSectElId: { current: number | null };
-  lastLeaveTarget: { current: HTMLDivElement | null };
+  lastLeaveTarget: { current: HTMLElement | null };
 }
 
 const TodoItem: React.FC<IProps> = ({
@@ -75,7 +75,7 @@ const TodoItem: React.FC<IProps> = ({
       dispatch(setTodoItemState(todo.id, todo.stateId)); // todos:[1212]
     }
   };
-  const onDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
+  const onDragStart = (e: React.DragEvent<HTMLElement>): void => {
     e.dataTransfer.effectAllowed = 'move';
     setDragItemId.grabItem(todo.id);
   };
@@ -85,19 +85,19 @@ const TodoItem: React.FC<IProps> = ({
     } else if (clickElId.current! > interSectElId.current!) return 'move_down';
     return '';
   };
-  const onDragEnter = (e: React.DragEvent<HTMLDivElement>): void => {
+  const onDragEnter = (e: React.DragEvent<HTMLElement>): void => {
     const moveClassName = moveUpAndDownClassName();
     if (lastLeaveTarget.current)
       lastLeaveTarget.current!.classList.remove('move_down');
-    const $target = e.target as HTMLDivElement;
+    const $target = e.target as HTMLElement;
     setDragItemId.interSectItem(todo.id);
     if (clickElId.current !== interSectElId.current && moveClassName)
       $target.classList.add(moveClassName);
     lastLeaveTarget.current = $target;
   };
 
-  const onDragEnd = (e: React.DragEvent<HTMLDivElement>): void => {
-    const $target = e.target as HTMLDivElement;
+  const onDragEnd = (e: React.DragEvent<HTMLElement>): void => {
+    const $target = e.target as HTMLElement;
     $target.classList.remove('move_up');
     $target.classList.remove('move_down');
     if (lastLeaveTarget.current) {
@@ -106,12 +106,12 @@ const TodoItem: React.FC<IProps> = ({
     }
     switchData();
   };
-  const onDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
+  const onDragOver = (e: React.DragEvent<HTMLElement>): void => {
     e.preventDefault();
   };
 
-  const onDragLeave = (e: React.DragEvent<HTMLDivElement>): void => {
-    const $target = e.target as HTMLDivElement;
+  const onDragLeave = (e: React.DragEvent<HTMLElement>): void => {
+    const $target = e.target as HTMLElement;
     $target.classList.remove('move_up');
   };
   return (
@@ -186,7 +186,7 @@ const CheckIconWrapper = styled.div`
     top: 6px;
   }
 `;
-const Container = styled.div`
+const Container = styled.li`
   display: flex;
   align-items: center;
   width: 100%;

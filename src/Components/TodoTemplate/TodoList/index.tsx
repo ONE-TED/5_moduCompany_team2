@@ -90,20 +90,22 @@ const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
           cb={todoItemAllDelete}
         />
       </ItemsDelete>
-      {data &&
-        data.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            checkedId={checkedId}
-            handleCheckedId={handleCheckedId}
-            setDragItemId={setDragItemId}
-            switchData={switchData}
-            interSectElId={interSectElId}
-            clickElId={clickElId}
-            lastLeaveTarget={lastLeaveTarget}
-          ></TodoItem>
-        ))}
+      <TodoItemsContainer>
+        {data &&
+          data.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              checkedId={checkedId}
+              handleCheckedId={handleCheckedId}
+              setDragItemId={setDragItemId}
+              switchData={switchData}
+              interSectElId={interSectElId}
+              clickElId={clickElId}
+              lastLeaveTarget={lastLeaveTarget}
+            ></TodoItem>
+          ))}
+      </TodoItemsContainer>
       {data.length === 0 && (
         <NonTodoItemsNoti>Todo가 없습니다.</NonTodoItemsNoti>
       )}
@@ -113,8 +115,12 @@ const TodoList: React.FC<IProps> = ({ filterTodos: data }) => {
 
 export default TodoList;
 
+const TodoItemsContainer = styled.ul`
+  max-height: 450px;
+`;
+
 const Wrapper = styled.div<{ todoCounts: number }>`
-  max-height: 500px;
+  max-height: 450px;
   overflow-x: hidden;
   overflow-y: ${(props) => (props.todoCounts === 0 ? 'none' : 'scroll')};
   &::-webkit-scrollbar {
