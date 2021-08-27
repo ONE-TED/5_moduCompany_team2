@@ -21,7 +21,7 @@ const TodoCreator: React.FC = () => {
   const { isShow, message, toast } = useToast();
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const datePickerRef = useRef<any>(null); // type 모르겠음
+  const datePickerRef = useRef<DatePicker>(null);
   const handleDateChange = useCallback((date: Date): void => {
     setTargetDate(date);
   }, []);
